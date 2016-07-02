@@ -4,7 +4,9 @@ Runs on any newer ESP8266 module (the ones woth more RAM) with 4MB flash running
 Access the NodeMCU filesystem via ESPlorer or other programs to upload the program, the two configuration files (ESPWIFI.conf and ESPWebserver.conf) and sequence files.
 Compress the Lua program for uploading it using Luasrcdiet (otherwise it will bust the modules RAM).
 
-Documentation not finished by now, I hope the comments suffice.
+Documentation not finished by now, I hope the comments and images suffice.
+
+![Module photos](https://github.com/OlexOlex/TPE-Module/blob/master/Hardware%2BChassis/Pictures/IMG_20160630_033513.jpg)
 
 ## Features:
 * Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**
