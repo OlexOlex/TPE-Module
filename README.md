@@ -22,8 +22,8 @@ Documentation not finished by now, I hope the coments suffice.
 * Access it in the local network at http://<your configured servername here> or 192.168.4.1 if your device is connected to its hotspot
 * Sockets provide ground, battery voltage and the signal (on = tied to ground, max 0.5A, off = no potential) when the module is on, so you can permanently power external modules/cirquits if needed (e.g. a shock module or flash-module that needs to recharge after "firing") or run a vibrator directly between signal and battery voltage
 * charge it with a common **micro USB** Cable, upload further files by the integrated usb-serial-adapter
-* **noncommercially open source** under the beerware-license (No guarantees, if you think it's good, buy me a beer when we meet, in case you want to use it commercially, contact me and we'll find an agreement)
-* Material cost: **~14€** for me when buying the stuff in China (Aliexpress and then wait for 1.5 Months - I got a cheap offer for the battery, you might have to pay 2-3€ more)
+* **noncommercially open source under the beerware-license** (No guarantees on anything, use at your own risk, if you think it's good, buy me a beer when we meet. In case you want to use it commercially, contact me and we'll find an agreement)
+* Material cost: **~14€** for me when buying the stuff in China (Aliexpress and then wait for 1.5 Months - I got a cheap offer for the battery, you might have to pay 2-3€ more. A list of the parts is in an OpenOffice spreadsheet in the Hardware+Chassis directory)
 * Relatively easy to build, **most parts are premanufactured ready-to-use-modules**, the connectors are common 3.5mm stereo jacks
 * any simple 3-4V vibrator with a remote control on a cord can easily be converted to fit this module (and if you add a socket to the original remote control, you can still plug it back)
 
