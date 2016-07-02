@@ -1,0 +1,79 @@
+# config file for ESP webserver. Each line of [key]=[value] is one config entry
+# wifitype can be
+#   - ap (opens its own AP)
+#   - cl (tries to connect to the first known wifi available)
+#   - mix (opens AP and tries to connect to the first known wifi the module finds)
+# (ssid/password pairs must be in ESPWifi.conf)
+wifitype=mix
+
+# defines physical wifi mode (b/g/n) if the module provides an accesspoint only
+APmode=n
+
+# device name when logged in to some wifitype (aka main part of the url in a browser. will be http://hostname )
+# must only contain letters, numbers and hyphens('-')
+# and be 32 characters or less with first and last character being alphanumeric
+hostname=sklavin
+
+# Website title:
+servername=Sklavin
+
+# optional password needed for changing values
+pwd=meinPasswort
+
+# size of the title on the webpage (part of html font-tag)
+titlesize=5
+
+# "menue" description strings for the main config page and the status/turn off page
+configstr=Einstellungen
+statusstr=Status
+
+# dimension of the frame containing the main config page or status/turn off page
+framew=325
+frameh=570
+
+
+# description of the PWM channels and pins on webpage
+pwm1=Plug
+pwm2=Dildo
+pwm3=Kitzler
+pin1n=Schock
+pin2n=Piepser
+
+textsize=4
+# string to show when no or wrong password was given in request (if password is set) - not used yet
+#wrongpasswordstr=Wrong password. Nothing done.
+
+# strings shown at webpage (descriptions/button names) - you can use html special characters
+alloffstr=Alles Aus
+setvalstr=&Uuml;bernehmen
+iscurrstr= ist aktuell 
+vstr=Versorgungsspannung: 
+turnoffstr=Modul ausschalten
+pwdstr=Passwort:
+
+
+# enable or disable functions/pins (en = enabled, any other character(s) = disabled)
+pwm1en=en
+pwm2en=en
+pwm3en=en
+pin1en=en
+pin2en=en
+
+
+# Hardware config - do not change unless you use your own hardware/know what you are doing!
+# pin 6 is GPIO12
+pwm1pin=6
+# pin 7 is GPIO13
+pwm2pin=7
+# pin 5 is GPIO14
+pwm3pin=5
+# pin 1 is GPIO4
+pin1=1
+# pin 6 is GPIO5
+pin2=2
+
+
+# (GPIO0 [0 in Lua] and GPIO2 [4 in lua] are not used because their state defines boot source, must be high at boot
+# GPIO15 [8 in Lua] as well, this must be low at boot)
+# GPIO16 [0 in lua] as well since it might be used for interrupts (power saving)
+# GPIO15 is used for turning power off

@@ -1,0 +1,4 @@
+pwmsequence
+400, 500
+1023, 500
+repeat, infinite
