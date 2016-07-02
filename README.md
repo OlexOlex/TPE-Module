@@ -1,6 +1,6 @@
 # TPE-Module
 A simple, small and cheap to build module to control 3 PWM driven and 2 binary (on/off) outputs via WIFI and a webinterface.
-Runs on any newer ESP8266 module (the ones woth more RAM) with 4MB flash running NodeMCU (I recommend an integer version)
+Runs on any newer ESP8266 module (the ones woth more RAM) with 4MB flash running NodeMCU (I recommend an integer version).
 Access the NodeMCU filesystem via ESPlorer or other programs to upload the program, the two configuration files (ESPWIFI.conf and ESPWebserver.conf) and sequence files.
 Compress the Lua program for uploading it using Luasrcdiet (otherwise it will bust the modules RAM)
 
