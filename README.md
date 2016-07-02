@@ -1,5 +1,5 @@
 # TPE-Module
-A simple, small and cheap to build module to control 3 PWM driven and 2 binary (on/off) outputs via WIFI and a webinterface.
+A simple, small and cheap to build module to control 3 PWM driven and 2 binary (on/off) outputs via WIFI and a webinterface (designed for controlling ibrators and other custom modules, especially in BDSM plays, that's why there is a password protection available)
 Runs on any newer ESP8266 module (the ones woth more RAM) with 4MB flash running NodeMCU (I recommend an integer version).
 Access the NodeMCU filesystem via ESPlorer or other programs to upload the program, the two configuration files (ESPWIFI.conf and ESPWebserver.conf) and sequence files.
 Compress the Lua program for uploading it using Luasrcdiet (otherwise it will bust the modules RAM).
@@ -7,6 +7,7 @@ Compress the Lua program for uploading it using Luasrcdiet (otherwise it will bu
 Documentation not finished by now, I hope the comments and images suffice.
 
 ![Module photos](https://github.com/OlexOlex/TPE-Module/blob/master/Hardware%2BChassis/Pictures/IMG_20160630_033513.jpg)
+![Website photo](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/German_website_v1.0/Hauptseite_post_Einstellungen.png)
 
 ## Features:
 * Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**
@@ -35,3 +36,13 @@ Documentation not finished by now, I hope the comments and images suffice.
 * The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (especially for the voltage measuring standard source I experienced it)
 * It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here]
 
+## Licence
+
+
+Noncommercial redistribution and use in source with or without modification, are permitted provided that the following conditions are met:
+* Redistributions of source code must retain this copyright notice, this list of conditions and the following disclaimer.
+* If you think this project is good, buy me a beer when we meet. Or make a donation to an NGO like the red cross or an NGO supporting environmental protection.
+
+THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL OLEX BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
+
+For commercial use ask me (Olex) and we will find an agreement.
