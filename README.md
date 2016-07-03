@@ -1,19 +1,22 @@
 # TPE-Module
-A simple, small and cheap to build module to control 3 PWM driven and 2 binary (on/off) outputs via WIFI and a webinterface (designed for controlling ibrators and other custom modules, especially in BDSM plays, that's why there is a password protection available)
-Runs on any newer ESP8266 module (the ones woth more RAM) with 4MB flash running NodeMCU (I recommend an integer version).
-Access the NodeMCU filesystem via ESPlorer or other programs to upload the program, the two configuration files (ESPWIFI.conf and ESPWebserver.conf) and sequence files.
-Compress the Lua program for uploading it using Luasrcdiet (otherwise it will bust the modules RAM).
+A simple, small and cheap to build module to control 3 PWM driven and 2 binary (on/off) outputs via WIFI and a webinterface (designed for controlling 3 vibrators and 2 other custom modules, especially in BDSM plays, that's why there is a password protection available)
 
-Documentation not finished by now, I hope the comments and images suffice.
+Runs on any newer ESP8266 module (the ones woth more RAM) with 4MB flash running NodeMCU (I recommend an integer version, the floatingpoint accurate version might use more RAM).
+
+Access the NodeMCU filesystem via ESPlorer or other programs to upload the program, the two configuration files (ESPWIFI.conf and ESPWebserver.conf) and sequence files.
+
+Compress the Lua program for uploading it using Luasrcdiet (otherwise it will bust the modules RAM when executing).
+
+Documentation not finished by now, I hope the comments and images suffice. Browse the project, it consists of only a few files separated into a software and hardware part.
 
 ![Module photos](https://github.com/OlexOlex/TPE-Module/blob/master/Hardware%2BChassis/Pictures/IMG_20160630_033513.jpg)
 ![Website photo](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/German_website_v1.0/Hauptseite_post_Einstellungen.png)
 
 ## Features:
 * Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**
-* **Control via web page** in any modern Browser (Tested with Firefox, Chrome, Android Browser)
-* Controls up to **three vibrators** or other things/external modules 0 - 1023 (though the lower 200 are usually useless for vibrators) or runs sequences on the vibrators
-* Controls up to **two other external modules** like e-shocking, a magnetic (un)lock, a beeper, etc. (gives a short on-signal)
+* **Control via web page** in any modern browser (Tested with Firefox, Chrome and Android 4.4 Browser)
+* Controls up to **three vibrators** or other things/external modules 0 - 1023 (though the lower 150 are usually useless for vibrators) or runs sequences on the vibrators that are defined in customizable sequence files
+* Controls up to **two other external modules** like e-stim, a magnetic (un)lock, a beeper, etc. (gives a short on-signal)
 * Nearly everything of the website as well as the WIFI options can be **customized by 2 configuration files** on the integrated primitive filesystem (sadly / luckily not like a USB-stick, you need an easy to use free Java software for access: ESPlorer) 
 * Supports many (at least 5 - limited only by buffer size for the IP packet) **custom sequences for vibrators** (each one is a file in the filesystem, simple and easy format, autodetected on boot)
 * Runs at least for **13 hours idling** (WIFI acesspoint running, logged into a WIFI network, a few website requests) with a 3,7V 1200mAh LiPo battery
@@ -36,8 +39,20 @@ Documentation not finished by now, I hope the comments and images suffice.
 * The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (especially for the voltage measuring standard source I experienced it)
 * It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here]
 
-## Licence
+# How to build one:
+* Build the hardware by wiring everything together (don't use the chassis yet)
+* Get an image of the NodeMCU firmware, e.g. at http://nodemcu-build.com/
+* Flash this image on your ESP-module by turning it on with a wire between GND ("Minus") and GPIO0 (and keep the on button pressed or shortened so it does not turn off again)
+* Reboot the module by releasing the on button/shorting and pressing/shorting it again (hold it)
+* Upload the server Lua script, the config files and any sequence file you want using e.g. ESPlorer
+* To test it, execute the server script by reloading the file list in ESPlorer, right click on the file and run it
+* If there are no error messages in ESPlorer, your module does not turn off after releasing the button/removing the shorting and there is a WIFI named "SGWIFI", it works. Try connecting to the WIFI using the password of the WIFI configuration file and test the output sockets
+* Change the configuration files as you wish and upload them, turn off the module and restart it
+* If everything works, assemble it in the chassis and have fun. Additionally you can seal everything with glue and hot glue so no water can get in the module
+* Have fun
 
+
+## Licence
 
 Noncommercial redistribution and use in source with or without modification, are permitted provided that the following conditions are met:
 * Redistributions of source code must retain this copyright notice, this list of conditions and the following disclaimer.
@@ -46,3 +61,5 @@ Noncommercial redistribution and use in source with or without modification, are
 THIS SOFTWARE IS PROVIDED ''AS IS'' AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL OLEX BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE
 
 For commercial use ask me (Olex) and we will find an agreement.
+
+All trademarks belong to their respective owners.
