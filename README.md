@@ -39,16 +39,16 @@ Documentation not finished by now, I hope the comments and images suffice. Brows
 * The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (especially for the voltage measuring standard source I experienced it)
 * It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here]
 
-# How to build one:
+## How to build one:
 * Build the hardware by wiring everything together (don't use the chassis yet)
 * Get an image of the NodeMCU firmware, e.g. at http://nodemcu-build.com/
-* Flash this image on your ESP-module by turning it on with a wire between GND ("Minus") and GPIO0 (and keep the on button pressed or shortened so it does not turn off again)
-* Reboot the module by releasing the on button/shorting and pressing/shorting it again (hold it)
-* Upload the server Lua script, the config files and any sequence file you want using e.g. ESPlorer
+* Flash this image on your ESP-module by turning it on while having a wire between GND ("Minus") and GPIO0 (and keep the on button pressed or shortened so it does not turn off again)
+* Reboot the module by releasing the on button/shorting, remove the wire to GPIO0, and pressing/shorting the on button again (hold it)
+* Upload the (by Luasrcdiet compressed) server Lua script, the config files and any sequence file you want using e.g. ESPlorer
 * To test it, execute the server script by reloading the file list in ESPlorer, right click on the file and run it
 * If there are no error messages in ESPlorer, your module does not turn off after releasing the button/removing the shorting and there is a WIFI named "SGWIFI", it works. Try connecting to the WIFI using the password of the WIFI configuration file and test the output sockets
-* Change the configuration files as you wish and upload them, turn off the module and restart it
-* If everything works, assemble it in the chassis and have fun. Additionally you can seal everything with glue and hot glue so no water can get in the module
+* Change the name of the server Lua script to "init.lua", change your configuration files as you wish and upload them, turn off the module and restart it
+* If everything works, assemble the hardware in the chassis. Additionally you can seal everything with glue and hot glue so no water can get in the module
 * Have fun
 
 
