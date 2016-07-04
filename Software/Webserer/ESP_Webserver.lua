@@ -97,12 +97,23 @@ end
 
 -- raise CPU frequency for startup
 node.setcpufreq(node.CPU160MHZ)
-gpio.mode(4, gpio.OUTPUT)
-gpio.write(4, gpio.HIGH)
+-- turn power on (so the Power button does not need to be pushed anymore)
+-- GPIO15 used for this
+gpio.mode(8, gpio.OUTPUT)
+gpio.write(8, gpio.HIGH)
 
 
 collectgarbage()
 print("Webserver v1.0")
+
+
+-- make sure to use the right ADC mode (if wrong mode was set, restart the module with adjusted settings)
+-- if you cange this from adc.INIT_VDD33 to adc.INIT_ADC make sure later you use
+-- adc.read() instead of adc.readvdd33(0) to read the voltage, and vice versa...
+-- only works in newer versions of NodeMCU 
+--if(adc.force_init_mode(adc.INIT_VDD33))then
+    --node.restart()
+--end
 
 -- initial field declaration
 wificfg = {}
@@ -294,9 +305,9 @@ srv:listen(80,function(conn)
                 gpio.write(8, gpio.LOW)
                 --node.restart()
             end
-            -- 
-            
-            buf = buf.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..adc.readvdd33().." mV<br><br>"..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/>"
+             
+            -- depending on the version of NodeMCU you need adc.readvdd33() (to read the internal supply voltage) or adc.read(0)*4.1 (to read the external voltage on pin ADC using 1k to GND and 4.7k to VBat (1 Cell LiPo)
+            buf = buf.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..adc.read(0)*4.1.." mV<br><br>"..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/>"
             buf = buf.."<br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
             
         elseif(path == "/c") then
