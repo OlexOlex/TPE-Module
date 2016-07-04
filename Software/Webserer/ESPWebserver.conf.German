@@ -32,7 +32,7 @@ framew=325
 frameh=570
 
 
-# description of the PWM channels and pins on webpage
+# description of the PWM channels and pins on webpage - make it a comment do disable password protection
 pwm1=Plug
 pwm2=Dildo
 pwm3=Kitzler
@@ -74,6 +74,5 @@ pin2=2
 
 
 # (GPIO0 [0 in Lua] and GPIO2 [4 in lua] are not used because their state defines boot source, must be high at boot
-# GPIO15 [8 in Lua] as well, this must be low at boot)
-# GPIO16 [0 in lua] as well since it might be used for interrupts (power saving)
-# GPIO15 is used for turning power off
+# GPIO15 [8 in Lua] as well, this must be low at boot and is used for controlling the modules power
+# GPIO16 [0 in lua] as well since it might be used for interrupts in the future, e.g. for power saving)
