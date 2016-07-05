@@ -212,7 +212,7 @@ if(t.pwd==cfg.pwd and t.off=="1")then
 print("Power off")
 gpio.write(8,gpio.LOW)
 end
-e=e.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..adc.read(0).." mV<br><br>"..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/>"
+e=e.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/>"
 e=e.."<br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
 elseif(a=="/c")then
 if(t.pwd==cfg.pwd)then

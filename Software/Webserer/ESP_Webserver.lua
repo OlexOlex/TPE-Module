@@ -306,8 +306,8 @@ srv:listen(80,function(conn)
                 --node.restart()
             end
              
-            -- depending on the version of NodeMCU you need adc.readvdd33() (to read the internal supply voltage) or adc.read(0)*4.1 (to read the external voltage on pin ADC using 1k to GND and 4.7k to VBat (1 Cell LiPo)
-            buf = buf.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..adc.read(0)*4.1.." mV<br><br>"..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/>"
+            -- depending on the version of NodeMCU you need adc.readvdd33() (to read the internal supply voltage) or (adc.read(0)*4) (to read the external voltage on pin ADC using 1.5k to GND and 4.7k to VBat (1 Cell LiPo)
+            buf = buf.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/>"
             buf = buf.."<br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
             
         elseif(path == "/c") then
