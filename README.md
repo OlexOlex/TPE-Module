@@ -21,18 +21,18 @@ The website can look like this in english, there is an english and a german samp
 
 ## Features:
 * Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**
-* **Control via web page** in any modern browser (Tested with Firefox, Chrome and Android 4.4 browser)
+* **Control via web page** in any modern browser (Tested with Firefox, Chrome and Android 4.4 browser) on any system in the same network - you can also control it via HTTP-GET messages, e.g. by using wget on linux
 * Controls up to **three vibrators** or other things/external modules 0 - 1023 (though the  1-150 are usually useless for vibrators) or runs sequences on the vibrators that are defined in customizable sequence files
 * Controls up to **two other external modules** like e-stim, a magnetic (un)lock, a beeper, etc. (gives a short on-signal)
 * Nearly everything of the website as well as the WIFI options can be **customized by 2 configuration files** on the integrated primitive filesystem (sadly / luckily not like a USB-stick, you need an easy to use free Java software for access: ESPlorer) 
-* Supports many (at least 5 - limited only by buffer size for the IP packet) **custom sequences for vibrators** (each one is a file in the filesystem, simple and easy format, autodetected on boot. Name the files as you want the sequences to be shown in the drop down menus)
-* Runs at least for **13 hours idling** (WIFI acesspoint running, connected to a WIFI network, a few website requests) with a 3,7V 1200mAh LiPo battery (uses approx. 90mA in idle)
+* Supports many **custom sequences for vibrators** (at least 5 - limited only by NodeMCUs buffer size of 1460 Byte for each output IP packet. This might change in newer versions to even smaller packets) Each sequence is a file in the filesystem with a simple and easy format, available sequence files are autodetected on boot. Name these files as you want the sequences to be shown in the drop down menus
+* Runs at least for **13 hours idling** (WIFI acesspoint running, connected to a WIFI network, a few website requests) with a 3,7V 1200mAh LiPo battery (uses approx. 90mA in idle). It might last longer if it does not provide an accesspoint
 * Turns on on 1 sec button press, you can **turn it off on the website only** - or build it yourself with a common switch to turn it on and off
 * Tick "Turn all off" and then "Set values" it to turn all outputs off
 * Configurable **password protection** (enable it by defining a password in the server config file, for disabling password protection make the line defining it a comment)
 * **86x51x21,5mm** in size - smaller than a pack of cigaretts. Depending on your skills and the features you want your module to have, you can build it in different cases.
 * "Status" page that shows you (roughly!) the current battery voltage and lets you turn off the module
-* Access it in the local network at http://[your configured servername here] or 192.168.4.1 if your device is connected to the modules accesspoint
+* Access it in the local network at its IP, http://[your configured servername here] or its "node-XXXXX" name if the registering of the server name did not work, or 192.168.4.1 if your device is connected to the modules' accesspoint
 * Sockets provide ground, battery voltage and the signal (on = tied to ground, max 0.5A, off = no potential) when the module is turned on, so you can permanently power external modules/cirquits if needed, or run a motor directly between the signal line and the battery voltage line
 * Charge it and access the integrated file system by the integrated usb-serial-adapter with a common **micro USB** cable
 * **Noncommercially open source* - details see Licence.txt (tl;dr: No guarantees on anything, use at your own risk, if you think it's good, buy me a beer when we meet or be a good guy in general. In case you want to use it commercially, contact me and we'll find an agreement)
@@ -45,6 +45,7 @@ The website can look like this in english, there is an english and a german samp
 * The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (especially for the voltage measuring standard source I experienced it), and before acessing the filesystem via ESPlorer, you might need to send the =node.heap() command ("Heap"-button) a few times to synchronize the connection
 * It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here] (once NodeMCU behaviour seems to have changed at that point as well)
 * The requests are unencrypted HTTP-POST requests - no ssl encryption used
+* The voltage reading is rough (no float numbers afailable for multiplication in the needed integer version of nodeMCU)
 
 
 ## Material used for this "full feature" Model:
@@ -55,7 +56,7 @@ Detailed information and sample links to the product pages of some online shops 
 * ULN2003A chip or module for driving the outputs
 * AMS1117 3.3V 800mA voltage regulator (yes, the cheap ones might only reach 2.9V on a close-to-empty battery, but the module runs even with 2.4V, so any cheap one will suffice)
 * 3,7V single cell LiPo battery (without any further protection circuit) 62,8mm x 30,3mm x 7,3mm 1200mAh
-* Chassis (apparently by "SZOMK" 86*51*21,5mm)
+* Chassis (apparently by "SZOMK" 86x5x*21,5mm)
 * Button (pus = on, no push = off), a waterproof one might be good
 * 5 sockets for 3.5mm stereo jacks (I used threaded ones, they are better for glueing to the chassis)
 * Resistors (7x 4,7kOhm, 2x 1,5kOhm)
