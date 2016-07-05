@@ -11,7 +11,10 @@ In case you change anything in the program, remember to compress the Lua program
 
 Documentation not finished by now, I hope this README, the comments and the images provided suffice. Browse the project, it consists of only a few files separated into a software and a hardware part.
 
+The Module with an attached vibrating bullet looks like this:
 ![Module photos](https://github.com/OlexOlex/TPE-Module/blob/master/Hardware%2BChassis/Pictures/IMG_20160630_033513.jpg)
+
+The website can look like this in german - please note that this module does not emit electric shocks! (enable or disable any output, name anything as you wish. The "Shock" and "Beeper" are just an example, you need to attach a custom module to an output port in order to get any Functionality from the two binary outputs)
 ![Website photo](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/German_website_v1.0/Hauptseite_post_Einstellungen.png)
 
 ## Features:
@@ -40,6 +43,38 @@ Documentation not finished by now, I hope this README, the comments and the imag
 * The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (especially for the voltage measuring standard source I experienced it), and before acessing the filesystem via ESPlorer, you might need to send the =node.heap() command ("Heap"-button) a few times to synchronize the connection
 * It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here] (once NodeMCU behaviour seems to have changed at that point as well)
 * The requests are unencrypted HTTP-POST requests - no ssl encryption used
+
+
+## Material used for this "full feature" Model:
+Detailed information and sample links to the product pages of some online shops are provided in an OpenOffice spreadsheet in the "Hardware" directory. (I got most of it on Aliexpress, Ebay and other sources might work as well)
+* ESP8266 module ESP-12 (or ESP-12E / ESP-12F) 
+* TP4056 micro-USB LiPo charging board with overcurrent and undervoltage protection (not just safe charging but safe discharging as well)
+* CP2102 micro-USB to serial adapter (or another 3.3V compatible one)
+* ULN2003A chip or module for driving the outputs
+* AMS1117 3.3V 800mA voltage regulator (yes, the cheap ones might only reach 2.9V on a close-to-empty battery, but the module runs even with 2.4V, so any cheap one will suffice)
+* 3,7V single cell LiPo battery (without any further protection circuit) 62,8mm x 30,3mm x 7,3mm 1200mAh
+* Chassis (apparently by "SZOMK" 86*51*21,5mm)
+* Button (pus = on, no push = off), a waterproof one might be good
+* 5 sockets for 3.5mm stereo jacks (I used threaded ones, they are better for glueing to the chassis)
+* Resistors (7x 4,7kOhm, 2x 1,5kOhm)
+* 1 Diode (Germanium, silicon may result in a higher voltage drop)
+* Cables (a few thicker ones for the main power, thinner ones for the signals)
+* 1 N-Channel (MOS)FET transistor (I used an AOD407)
+* 1 NPN Transistor (used one of the primitive BC108 ones, but likely any one turning on at 3.3V or lower will work)
+* Additionally you might want dust covers for the micro-USB port and the sockets and a prototyping pcb, shrinking tube might be useful as well
+* For building a small bullet vibrator a common mobile phone vibration motor and some tube, shrinking tube and a rubber foot/etc for a case + a 2 wire cable
+
+### Tools needed:
+* A soldering iron and some solder
+* A side cutter or strong scissors for cutting wires, a wire stripper might be handy, but if you are carefully or handy, you don't need one
+* An electric drill
+* A drill for metal with 5mm diameter for drilling the holes for the 3,5mm sockets to stick through the case
+* A drill for metal with the same diameter as the buttons shaft (or a smaller one and a milling cutter for enlargening the hole)
+* A 4mm drill and/or milling cutter for drilling the hole for the micro-USB socket (multiple holes next to each other becoming a slot)
+* A trianglular or semi-circle file for cleaning the hole for the micro-USB socket
+* Waterproof glue and hot glue or similar to glue the components safely together and to the case (two component resin or silicon might work as well)
+* Something to measure where to drill the holes in the case
+* 
 
 ## How to build one:
 * Build the hardware by wiring everything together (don't use the chassis yet)
