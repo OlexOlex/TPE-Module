@@ -1,4 +1,5 @@
-Copyright (c) 2016 Olex
+Copyright (c) 2016 Olex <olexolex@gmx.de>
+
 Noncommercial redistribution and use in source with or without modification, are permitted provided that the following conditions are met:
 * Redistributions of source code must retain this copyright notice, this list of conditions and the following disclaimer.
 * If you think this project is good, buy me a beer when we meet.
