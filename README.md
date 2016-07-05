@@ -12,6 +12,7 @@ In case you change anything in the program, remember to compress the Lua program
 Documentation not finished by now, I hope this README, the comments and the images provided suffice. Browse the project, it consists of only a few files separated into a software and a hardware part.
 
 The Module with an attached vibrating bullet looks like this:
+
 ![Module photos](https://github.com/OlexOlex/TPE-Module/blob/master/Hardware%2BChassis/Pictures/IMG_20160630_033513.jpg)
 
 The website can look like this in german - please note that this module does not emit electric shocks! (enable or disable any output, name anything as you wish. The "Shock" and "Beeper" are just an example, you need to attach a custom module to an output port in order to get any Functionality from the two binary outputs)
@@ -73,8 +74,7 @@ Detailed information and sample links to the product pages of some online shops 
 * A 4mm drill and/or milling cutter for drilling the hole for the micro-USB socket (multiple holes next to each other becoming a slot)
 * A trianglular or semi-circle file for cleaning the hole for the micro-USB socket
 * Waterproof glue and hot glue or similar to glue the components safely together and to the case (two component resin or silicon might work as well)
-* Something to measure where to drill the holes in the case
-* 
+* Something to measure and mark where to drill the holes in the case
 
 ## How to build one:
 * Build the hardware by wiring everything together (don't use the chassis yet)
@@ -87,6 +87,8 @@ Detailed information and sample links to the product pages of some online shops 
 * Change the name of the server Lua script to "init.lua", change your configuration files as you wish and upload them, turn off the module and restart it
 * If everything works, assemble the hardware in the chassis (you need a hole for every 3.5mm socket, the button and a slot for the micro-USB socket). Additionally you can seal everything with glue and hot glue or whatever you think is useful, so no water can get in the module
 * Have fun
+
+Questions? Ask me via olexolex at gmx dot de.
 
 
 ## Licence
