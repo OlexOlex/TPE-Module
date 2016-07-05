@@ -12,10 +12,10 @@ APmode=n
 # device name when logged in to some wifitype (aka main part of the url in a browser. will be http://hostname )
 # must only contain letters, numbers and hyphens('-')
 # and be 32 characters or less with first and last character being alphanumeric
-hostname=sklavin
+hostname=fernsteuerung
 
 # Website title:
-servername=Sklavin
+servername=Fernsteuerung
 
 # optional password needed for changing values
 pwd=meinPasswort
@@ -36,7 +36,7 @@ frameh=570
 pwm1=Plug
 pwm2=Dildo
 pwm3=Kitzler
-pin1n=Schock
+pin1n=Schloss auf
 pin2n=Piepser
 
 textsize=4
