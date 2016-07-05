@@ -12,10 +12,10 @@ APmode=n
 # device name when logged in to some wifitype (aka main part of the url in a browser. will be http://hostname )
 # must only contain letters, numbers and hyphens('-')
 # and be 32 characters or less with first and last character being alphanumeric
-hostname=sg-remote
+hostname=remote-control
 
 # Website title:
-servername=Slave
+servername=Remote
 
 # optional password needed for changing values - make it a comment do disable password protection
 pwd=mypassword
@@ -36,7 +36,7 @@ frameh=570
 pwm1=Plug
 pwm2=Dildo
 pwm3=Clit
-pin1n=Shock
+pin1n=Unlock
 pin2n=Beep
 
 textsize=4
