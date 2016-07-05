@@ -301,9 +301,7 @@ srv:listen(80,function(conn)
             --print("got status request")
             if(_POST.pwd == cfg.pwd and _POST.off == "1") then
                 print("Power off")
-                -- TODO handle turning off power by setting GPIO15 LOW (is initially high)
                 gpio.write(8, gpio.LOW)
-                --node.restart()
             end
              
             -- depending on the version of NodeMCU you need adc.readvdd33() (to read the internal supply voltage) or (adc.read(0)*4) (to read the external voltage on pin ADC using 1.5k to GND and 4.7k to VBat (1 Cell LiPo)
@@ -422,8 +420,8 @@ srv:listen(80,function(conn)
             -- add emergency stop / lazy way to turn everything off
             buf = buf.."<br><br><input type=\"checkbox\" name=\"alloff\" value=\"1\"> "..cfg.alloffstr.."<br><br>"
             if(cfg.pwd ~= nil) then
-                -- ask for Password if one is set- unsafe via GET request, but this works for our purpose
-                -- TODO: do it in a good way! (no unencrypted HTTP-GET!)
+                -- ask for Password if one is set- unsafe via POST request, but this works for our purpose
+                -- TODO: do it in a good way! (no unencrypted HTTP-POST / GET!)
                 buf = buf.."<br>"..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/><br><br>"
             end
 
