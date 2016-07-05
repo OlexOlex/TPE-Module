@@ -15,8 +15,9 @@ The Module with an attached vibrating bullet looks like this:
 
 ![Module photos](https://github.com/OlexOlex/TPE-Module/blob/master/Hardware%2BChassis/Pictures/IMG_20160630_033513.jpg)
 
-The website can look like this in german - please note that this module does not emit electric shocks! (enable or disable any output, name anything as you wish. The "Shock" and "Beeper" are just an example, you need to attach a custom module to an output port in order to get any Functionality from the two binary outputs)
-![Website photo](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/German_website_v1.0/Hauptseite_post_Einstellungen.png)
+The website can look like this in english, there is an english and a german sample config file available (enable or disable any output, name anything as you wish. The "Unlock" and "Beep" are just an example, you need to attach a custom module to an output port in order to get any functionality from the two binary outputs)
+
+![Main website screenshot](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/English_website_v1.0.png) ![Status and turn-off website screenshot](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/English_website_status_v1.0.png)
 
 ## Features:
 * Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**
