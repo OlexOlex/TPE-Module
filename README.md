@@ -22,7 +22,7 @@ The website can look like this in english, there is an english and a german samp
 ## Features:
 * Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**
 * **Control via web page** in any modern browser (Tested with Firefox, Chrome and Android 4.4 browser) on any system in the same network - you can also control it via HTTP-GET messages, e.g. by using wget on linux
-* No need for a dedicated app, call the webpage from the private browsing window of your buissnes cell phone and no traces are left, "Is my platform supported?" is answered by "If it has a browser and network access, most probably yes"
+* **No need for a dedicated app**, call the webpage from the private browsing window of your buissnes cell phone and no traces are left, "Is my platform supported?" is answered by "If it has a browser and network access, most probably yes"
 * Controls up to **three vibrators** or other things/external modules 0 - 1023 (though the  1-150 are usually useless for vibrators) or runs sequences on the vibrators that are defined in customizable sequence files
 * Controls up to **two other external modules** like e-stim, a magnetic (un)lock, a beeper, etc. (gives a short on-signal)
 * Nearly everything of the website as well as the WIFI options can be **customized by 2 configuration files** on the integrated primitive filesystem (sadly / luckily not like a USB-stick, you need an easy to use free Java software for access: ESPlorer) 
