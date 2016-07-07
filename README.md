@@ -9,7 +9,7 @@ To access the NodeMCU filesystem you can use programs like [ESPlorer](http://esp
 
 In case you change anything in the program, remember to compress the Lua program for uploading it using [Luasrcdiet](http://esp8266.ru/esplorer/) (otherwise it will bust the modules RAM when executing).
 
-Documentation not finished by now, I hope this README, the comments and the images provided suffice. Browse the project, it consists of only a few files separated into a software and a hardware part.
+Documentation not finished by now, I hope this README, the comments and the images and 3D-drawings provided suffice. Browse the project, it consists of only a few files separated into a software and a hardware part.
 
 The Module with an attached vibrating bullet looks like this:
 
@@ -21,7 +21,7 @@ The website can look like this in english, there is an english and a german samp
 
 ## Features:
 * Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**
-* **Control via web page** in any modern browser (Tested with Firefox, Chrome and Android 4.4 browser) on any system in the same network - you can also control it via HTTP-GET messages, e.g. by using wget on linux
+* **Control via web page** in any modern browser (Tested with Firefox, Chromium and Android 4.4 browser) on any system in the same network - you can also control it via HTTP-GET messages, e.g. by using wget on linux
 * **No need for a dedicated app**, call the webpage from the private browsing window of your buissnes cell phone and no traces are left, "Is my platform supported?" is answered by "If it has a browser and network access, most probably yes"
 * Controls up to **three vibrators** or other things/external modules 0 - 1023 (though the  1-150 are usually useless for vibrators) or runs sequences on the vibrators that are defined in customizable sequence files
 * Controls up to **two other external modules** like e-stim, a magnetic (un)lock, a beeper, etc. (gives a short on-signal)
@@ -34,7 +34,7 @@ The website can look like this in english, there is an english and a german samp
 * **86x51x21,5mm** in size - smaller than a pack of cigaretts. Depending on your skills and the features you want your module to have, you can build it in different cases.
 * "Status" page that shows you (roughly!) the current battery voltage and lets you turn off the module
 * Access it in the local network at its IP, http://[your configured servername here] or its "node-XXXXX" name if the registering of the server name did not work, or 192.168.4.1 if your device is connected to the modules' accesspoint
-* Sockets provide ground, battery voltage and the signal (on = tied to ground, max 0.5A, off = no potential) when the module is turned on, so you can permanently power external modules/cirquits if needed, or run a motor directly between the signal line and the battery voltage line
+* Sockets provide ground, battery voltage and the signal (on = tied to ground, max 0.5A each, max ~3A until the battery protection turns off power, off = no potential) when the module is turned on, so you can permanently power external modules/cirquits if needed, or run a motor directly between the signal line and the battery voltage line
 * Charge it and access the integrated file system by the integrated usb-serial-adapter with a common **micro USB** cable
 * **Noncommercially open source** - details see Licence.txt (tl;dr: No guarantees on anything, use at your own risk, if you think it's good, buy me a beer when we meet or be a good guy in general. In case you want to use it commercially, contact me and we'll find an agreement)
 * Material cost: **~14€** for me when buying the stuff in China. I bought it at Aliexpress and then waited for 1.5 Months for most of the items to arrive. Two never arrived, I got a refund and got them somewhere else, that is why the ULN2003 module is replaced by a single ULN2003A Chip in the Photos. I got a cheap offer for the battery, you might have to pay 2-3€ more. A list of the parts is in an OpenOffice spreadsheet in the Hardware+Chassis directory, Ebay and other sources might be good sources as well)
@@ -47,11 +47,11 @@ The website can look like this in english, there is an english and a german samp
 * It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here] (once NodeMCU behaviour seems to have changed at that point as well)
 * The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (especially for the voltage measuring standard source I experienced it), and before acessing the filesystem via ESPlorer, you might need to send the =node.heap() command ("Heap"-button) a few times to synchronize the connection
 * The requests are unencrypted HTTP-POST requests - no ssl encryption used
-* The voltage reading is rough (no float numbers afailable for multiplication in the needed integer version of nodeMCU)
+* The voltage reading is rough (no float numbers available for multiplication in the needed integer version of nodeMCU)
 
 
 ## Material used for this "full feature" Model:
-Detailed information and sample links to the product pages of some online shops are provided in an OpenOffice spreadsheet in the "Hardware" directory. (I got most of it on Aliexpress, Ebay and other sources might work as well)
+Detailed information and sample links to the product pages of some online shops are provided in an OpenOffice spreadsheet in the "Hardware" directory. (I got most of it on Aliexpress, Ebay, Amazon and other sources might work as well)
 * ESP8266 module ESP-12 (or ESP-12E / ESP-12F) 
 * TP4056 micro-USB LiPo charging board with overcurrent and undervoltage protection (not just safe charging but safe discharging as well)
 * CP2102 micro-USB to serial adapter (or another 3.3V compatible one)
@@ -60,7 +60,7 @@ Detailed information and sample links to the product pages of some online shops 
 * 3,7V single cell LiPo battery (without any further protection circuit) 62,8mm x 30,3mm x 7,3mm 1200mAh
 * Chassis (apparently by "SZOMK" 86x5x*21,5mm)
 * Button (pus = on, no push = off), a waterproof one might be good
-* 5 sockets for 3.5mm stereo jacks (I used threaded ones, they are better for glueing to the chassis)
+* 5 sockets for 3.5mm stereo audio jacks - use the threaded ones, they are better for glueing to the chassis and can be screwed to the chassis when you drill the outer half of the mounting hole with a larger drill
 * Resistors (7x 4,7kOhm, 2x 1,5kOhm)
 * 1 Diode (Germanium, silicon may result in a higher voltage drop)
 * Cables (a few thicker ones for the main power, thinner ones for the signals)
@@ -75,7 +75,7 @@ Detailed information and sample links to the product pages of some online shops 
 * An electric drilling machine (a vertical drilling machine is even more useful)
 * A 5mm steel drill for drilling the holes for the 3,5mm sockets to stick through the case
 * A steel drill with the same diameter as the buttons' shaft (or a smaller one and a milling cutter for enlargening the hole)
-* A 4mm drill and/or milling cutter for drilling the hole for the micro-USB socket (multiple holes next to each other becoming a slot)
+* A 4mm drill and/or milling cutter for drilling the hole for the micro-USB socket (multiple holes next to each other becoming a slot), optionally a 3-4mm larger one to drill a larger hole halfway through the chassis to screw on the nuts of the sockets.
 * A trianglular or semi-circle file for cleaning the hole for the micro-USB socket
 * Waterproof glue and hot glue or similar to glue the components safely together and to the case (two component resin or silicon might work as well)
 * Something to measure and mark where to drill the holes in the case
