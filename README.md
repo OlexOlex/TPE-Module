@@ -58,7 +58,7 @@ Detailed information and sample links to the product pages of some online shops 
 * ULN2003A chip or module for driving the outputs
 * AMS1117 3.3V 800mA voltage regulator (yes, the cheap ones might only reach 2.9V on a close-to-empty battery, but the module runs even with 2.4V, so any cheap one will suffice)
 * 3,7V single cell LiPo battery (without any further protection circuit) 62,8mm x 30,3mm x 7,3mm 1200mAh
-* Chassis (apparently by "SZOMK" 86x5x*21,5mm)
+* ABS plastic box 86x50x21,5mm (or 85x50x21,5mm according to other vendors) or similar
 * Button (pus = on, no push = off), a waterproof one might be good
 * 5 sockets for 3.5mm stereo audio jacks - use the threaded ones, they are better for glueing to the chassis and can be screwed to the chassis when you drill the outer half of the mounting hole with a larger drill
 * Resistors (7x 4,7kOhm, 2x 1,5kOhm)
