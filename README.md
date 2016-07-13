@@ -44,7 +44,7 @@ The website can look like this in english, there is an english and a german samp
 ### Disadvantages:
 * The module runs a Lua interpreter, which was not designed for running a webserver on it, but this project does so. So the current state is close to busting the modules RAM
 * If a browser splits an HTTP-POST request in multiple packets (one the HTTP-request, one containing the POST-parameters) it might nor work (quickfix for you is to change the POST-requests to GET-requests in the code returning the webpage)
-* It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://your configured servername here (once NodeMCU behaviour seems to have changed at that point as well)
+* It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here] - once NodeMCU behaviour seems to have changed at that point as well
 * The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (especially for the voltage measuring standard source I experienced it), and before acessing the filesystem via ESPlorer, you might need to send the =node.heap() command ("Heap"-button) a few times to synchronize the connection
 * The requests are unencrypted HTTP-POST requests - no ssl encryption used
 * The voltage reading is rough (no float numbers available for multiplication in the needed integer version of nodeMCU)
