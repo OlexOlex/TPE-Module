@@ -20,9 +20,9 @@ The website can look like this in english, there is an english and a german samp
 ![Main website screenshot](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/English_website_v1.0.png) ![Status and turn-off website screenshot](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/English_website_status_v1.0.png)
 
 ## Features:
-* Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**
+* Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**, e.g. control it via your home WIFI or outside via the accesspoint
 * **Control via web page** in any modern browser (Tested with Firefox, Chromium and Android 4.4 browser) on any system in the same network - you can also control it via HTTP-GET messages, e.g. by using wget on linux
-* **No need for a dedicated app**, call the webpage from the private browsing window of your buissnes cell phone and no traces are left, "Is my platform supported?" is answered by "If it has a browser and network access, most probably yes"
+* **No need for a dedicated app**, call the webpage from the private browsing window of your business cell phone and no traces are left, "Is my platform supported?" is answered by "If it has a browser and network access, most probably yes"
 * Controls up to **three vibrators** or other things/external modules 0 - 1023 (though the  1-150 are usually useless for vibrators) or runs sequences on the vibrators that are defined in customizable sequence files
 * Controls up to **two other external modules** like e-stim, a magnetic (un)lock, a beeper, etc. (gives a short on-signal)
 * Nearly everything of the website as well as the WIFI options can be **customized by 2 configuration files** on the integrated primitive filesystem (sadly / luckily not like a USB-stick, you need an easy to use free Java software for access: ESPlorer) 
@@ -44,7 +44,7 @@ The website can look like this in english, there is an english and a german samp
 ### Disadvantages:
 * The module runs a Lua interpreter, which was not designed for running a webserver on it, but this project does so. So the current state is close to busting the modules RAM
 * If a browser splits an HTTP-POST request in multiple packets (one the HTTP-request, one containing the POST-parameters) it might nor work (quickfix for you is to change the POST-requests to GET-requests in the code returning the webpage)
-* It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here] (once NodeMCU behaviour seems to have changed at that point as well)
+* It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://your configured servername here (once NodeMCU behaviour seems to have changed at that point as well)
 * The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (especially for the voltage measuring standard source I experienced it), and before acessing the filesystem via ESPlorer, you might need to send the =node.heap() command ("Heap"-button) a few times to synchronize the connection
 * The requests are unencrypted HTTP-POST requests - no ssl encryption used
 * The voltage reading is rough (no float numbers available for multiplication in the needed integer version of nodeMCU)
