@@ -1,17 +1,19 @@
 # TPE-Module
-A simple, small, cheap and relatively easy to build module to control 3 PWM driven and 2 binary (on/off) outputs via WIFI and a webinterface (designed for controlling 3 vibrators and 2 other custom modules, especially in BDSM plays, that's why there is a password protection available)
+**A simple, small, cheap and relatively easy to build module to control 3 PWM driven and 2 binary (on/off) outputs via WIFI and a webinterface** (designed for controlling 3 vibrators and 2 other custom modules, especially in BDSM plays, that's why there is a password protection available)
 
-Runs on any newer ESP8266 module (the ones with more RAM than the first version) with 4MB flash running NodeMCU (I recommend an integer version, the floatingpoint accurate version might use too much RAM).
+Runs on any newer ESP8266 module running NodeMCU (the ones with more RAM than the first version, usually featuring 4MB flash)
+I recommend an integer version of NodeMCU, the floatingpoint accurate version might most probably use too much RAM.
 
 To flash NodeMCU to your module you can use programs like [esptool.py](https://github.com/themadinventor/esptool/blob/master/esptool.py)
 
-To access the NodeMCU filesystem you can use programs like [ESPlorer](http://esp8266.ru/esplorer/), you need it to upload the program, the two configuration files (ESPWIFI.conf and ESPWebserver.conf) and sequence files, and to test (execute) the Lua server program before renaming it so it gets executed automatically at startup.
+To access the NodeMCU filesystem you can use programs like [ESPlorer](http://esp8266.ru/esplorer/)
+You need it to upload the Lua server program, the two configuration files (ESPWIFI.conf and ESPWebserver.conf) and any sequence files. You also need it to test (execute) the Lua server program before renaming it so it gets executed automatically at startup (broken init.lua files might brick your module and force you to re-flash NodeMCU to un-brick it).
 
-In case you change anything in the program, remember to compress the Lua program for uploading it using [Luasrcdiet](http://esp8266.ru/esplorer/) (otherwise it will bust the modules RAM when executing).
+In case you change anything in the Lua server program, remember to compress the Lua program for uploading it using [Luasrcdiet](http://esp8266.ru/esplorer/) (otherwise it will most likely bust the modules RAM when executing).
 
-Documentation not finished by now, I hope this README, the comments and the images and 3D-drawings provided suffice. Browse the project, it consists of only a few files separated into a software and a hardware part.
+Documentation is not finished by now, I hope this README, the comments, the images and 3D-drawings provided suffice. Browse the project, it consists of only a few files separated into a software and a hardware part.
 
-The Module with an attached vibrating bullet looks like this:
+The Module with an attached vibrating bullet can look like this:
 
 ![Module photos](https://github.com/OlexOlex/TPE-Module/blob/master/Hardware%2BChassis/Pictures/IMG_20160630_033513.jpg)
 
@@ -28,21 +30,21 @@ The website can look like this in english, there is an english and a german samp
 * Nearly everything of the website as well as the WIFI options can be **customized by 2 configuration files** on the integrated primitive filesystem (sadly / luckily not like a USB-stick, you need an easy to use free Java software for access: ESPlorer) 
 * Supports many **custom sequences for vibrators** (at least 5 - limited only by NodeMCUs buffer size of 1460 Byte for each output IP packet. This might change in newer versions to even smaller packets) Each sequence is a file in the filesystem with a simple and easy format, available sequence files are autodetected on boot. Name these files as you want the sequences to be shown in the drop down menus
 * Runs at least for **13 hours idling** (WIFI acesspoint running, connected to a WIFI network, a few website requests) with a 3,7V 1200mAh LiPo battery (uses approx. 90mA in idle). It might last longer if it does not provide an accesspoint
-* Turns on on 1 sec button press, you can **turn it off on the website only** - or build it yourself with a common switch to turn it on and off
-* Tick "Turn all off" and then "Set values" it to turn all outputs off
+* Turns on on 1 sec button press, you can **turn it off on the website only** - or customize it by using a switch to turn it on and off
+* Tick "Turn all off" and then press "Set values" to turn all outputs off (kind of lazy off or "emergency off")
 * Configurable **password protection** (enable it by defining a password in the server config file, for disabling password protection make the line defining it a comment)
 * **86x51x21,5mm** in size - smaller than a pack of cigaretts. Depending on your skills and the features you want your module to have, you can build it in different cases.
 * "Status" page that shows you (roughly!) the current battery voltage and lets you turn off the module
-* Access it in the local network at its IP, http://[your configured servername here] or its "node-XXXXX" name if the registering of the server name did not work, or 192.168.4.1 if your device is connected to the modules' accesspoint
-* Sockets provide ground, battery voltage and the signal (on = tied to ground, max 0.5A each, max ~3A until the battery protection turns off power, off = no potential) when the module is turned on, so you can permanently power external modules/cirquits if needed, or run a motor directly between the signal line and the battery voltage line
+* Access it in the local network at its IP, http://[your configured servername here] or its "node-XXXXX" name if the registering of the host name did not work, or http://192.168.4.1 if your device is connected to the modules' accesspoint
+* Sockets provide ground, battery voltage and the signal (on = tied to ground, max 0.5A each, max ~3A alltogether until the battery protection turns off power. off = no potential) when the module is turned on, so you can permanently **power external modules/cirquits if needed**, or **run a motor directly** between the signal line and the battery voltage line
 * Charge it and access the integrated file system by the integrated usb-serial-adapter with a common **micro USB** cable
 * **Noncommercially open source** - details see Licence.txt (tl;dr: No guarantees on anything, use at your own risk, if you think it's good, buy me a beer when we meet or be a good guy in general. In case you want to use it commercially, contact me and we'll find an agreement)
 * Material cost: **~14€** for me when buying the stuff in China. I bought it at Aliexpress and then waited for 1.5 Months for most of the items to arrive. Two never arrived, I got a refund and got them somewhere else, that is why the ULN2003 module is replaced by a single ULN2003A Chip in the Photos. I got a cheap offer for the battery, you might have to pay 2-3€ more. A list of the parts is in an OpenOffice spreadsheet in the Hardware+Chassis directory, Ebay and other sources might be good sources as well)
 * **Relatively easy to build, most parts are premanufactured ready-to-use-modules**, the connectors are common 3.5mm stereo jacks
-* Any simple 3-4V device with a remote control on a cable can easily be converted to fit this module (and if you add a socket to the original remote control, you can still plug it back)
+* Any simple 3-4V vibrating device with a remote control on a cable can easily be converted to fit this module (and if you solder a socket to the original remote control, you can still use the device with the original remote control )
 
 ### Disadvantages:
-* If a browser splits an HTTP-POST request in multiple packets (one the HTTP-request, one containing the POST-parameters) it might nor work (quickfix for you might be to change a forms request type from POST to GET at two places where the code returns a webpage)
+* If a browser splits an HTTP-POST request to multiple packets (one the HTTP-request, one containing the POST-parameters) it might not work or need a page reload after every request to display the current settings (quickfix for you might be to change a forms request type from POST to GET at two places where the code returns a webpage)
 * It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here] - once NodeMCU behaviour seems to have changed at that point as well
 
 ### Minor "not as perfect as it could be" properties:
