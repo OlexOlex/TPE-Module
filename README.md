@@ -42,12 +42,16 @@ The website can look like this in english, there is an english and a german samp
 * Any simple 3-4V device with a remote control on a cable can easily be converted to fit this module (and if you add a socket to the original remote control, you can still plug it back)
 
 ### Disadvantages:
-* The module runs a Lua interpreter, which was not designed for running a webserver on it, but this project does so. So the current state is close to busting the modules RAM
-* If a browser splits an HTTP-POST request in multiple packets (one the HTTP-request, one containing the POST-parameters) it might nor work (quickfix for you is to change the POST-requests to GET-requests in the code returning the webpage)
+* If a browser splits an HTTP-POST request in multiple packets (one the HTTP-request, one containing the POST-parameters) it might nor work (quickfix for you might be to change a forms request type from POST to GET at two places where the code returns a webpage)
 * It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here] - once NodeMCU behaviour seems to have changed at that point as well
-* The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (especially for the voltage measuring standard source I experienced it), and before acessing the filesystem via ESPlorer, you might need to send the =node.heap() command ("Heap"-button) a few times to synchronize the connection
+
+### Minor "not as perfect as it could be" properties:
+* The module runs a Lua interpreter, which was not designed for running a webserver on it, but this project does so. So the current state is close to busting the modules RAM
+* "compiling" the script to a .lc file to speed up execution time makes it bigger, thus exceeds the RAM and does not execute at all
+* the ESP8266 Module does only support at maximum 4 client devices connected to its WIFI accesspoint
+* The voltage reading is rough (only real numbers, no float numbers available for multiplication in the integer version of nodeMCU which is needed for reducing RAM usage)
 * The requests are unencrypted HTTP-POST requests - no ssl encryption used
-* The voltage reading is rough (no float numbers available for multiplication in the needed integer version of nodeMCU)
+* The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (for the voltage measuring standard source and the hostname setup I experienced it), and before acessing the filesystem via ESPlorer, you might need to send the =node.heap() command ("Heap"-button) a few times to synchronize the connection
 
 
 ## Material used for this "full feature" Model:
@@ -73,23 +77,23 @@ Detailed information and sample links to the product pages of some online shops 
 * A soldering iron and some solder
 * A side cutter or strong scissors for cutting wires, a wire stripper might be handy, but if you are carefully or handy, you don't need one
 * An electric drilling machine (a vertical drilling machine is even more useful)
-* A 5mm steel drill for drilling the holes for the 3,5mm sockets to stick through the case
-* A steel drill with the same diameter as the buttons' shaft (or a smaller one and a milling cutter for enlargening the hole)
-* A 4mm drill and/or milling cutter for drilling the hole for the micro-USB socket (multiple holes next to each other becoming a slot), optionally a 3-4mm larger one to drill a larger hole halfway through the chassis to screw on the nuts of the sockets.
+* A 5mm steel drill for drilling the holes for the 3,5mm sockets to stick through the case, optionally an 8mm steel drill to widen the front of the holes to screw the nuts to the sockets
+* A steel drill with the same diameter as the buttons' shaft (or a smaller one and a milling cutter/file for enlargening the hole)
+* A 4mm drill and/or milling cutter for drilling the hole for the micro-USB socket (multiple holes next to each other becoming a slot)
 * A trianglular or semi-circle file for cleaning the hole for the micro-USB socket
 * Waterproof glue and hot glue or similar to glue the components safely together and to the case (two component resin or silicon might work as well)
 * Something to measure and mark where to drill the holes in the case
 
 ## How to build one:
 * Build the hardware by wiring everything together (don't use the chassis yet)
-* Get an image of the NodeMCU firmware, e.g. the one provided in this project or a new one at http://nodemcu-build.com/ (!!!dev branch!!!)
+* Get an image of the NodeMCU firmware, e.g. the copy provided in this project or get a new one, e.g. at http://nodemcu-build.com/ (!!!*dev branch*!!! many functionalities are not available in the old "stable" branch)
 * Flash this image on your ESP-module by turning it on while having a wire between GND ("Minus") and GPIO0 -keep the power button pressed or shortened so it does not turn off again! You can remove the wire from GPIO0 a few moments after tunring the module on. You also might want to have the battery disconnected for this step for security reasons.
-* Reboot the module by releasing the power button/shorting, remove the wire to GPIO0 (if you did not allready), and pressing/shorting the power button again.
+* Reboot the module by releasing the power button/shorting, removing the wire to GPIO0 (if you did not allready), and pressing/shorting the power button again (keep presssed/shortened).
 * Upload the server Lua script (compressed by Luasrcdiet), the config files and any sequence file you want using e.g. ESPlorer. You might need to request the currently free heap space a few times before the connection is properly synchronized ("Heap"-button in ESPlorer). If you get weird characters but nothing works, close the serial port, change the baud rate (9600 or 115200 most likely) and open it again, then try again reading the free heap space.
 * To test it, execute the server script by reloading the file list in ESPlorer ("Reload" button) and click on the file to run it
-* If there are no error messages in ESPlorer, your module does not turn off after releasing the button/removing the shorting and there is a WIFI named "remoteWIFI", it works. Try connecting to the WIFI using the password of the WIFI configuration file ("pwd") and test the output sockets (default website passwords: in the english condig file: mypassword, in the german config file: meinPasswort)
+* If there are no error messages in ESPlorer, your module does not turn off after releasing the button/removing the shorting and there is a WIFI named "remoteWIFI", it works. Try connecting to the WIFI using the password of the WIFI configuration file ("pwd") and test the output sockets (default website passwords: in the english condfg file: mypassword, in the german config file: meinPasswort)
 * Change the name of the server Lua script to "init.lua", change your configuration files as you wish and upload them, turn off the module and restart it
-* If everything works, assemble the hardware in the chassis (you need a hole for every 3.5mm socket, the button and a slot for the micro-USB socket). Additionally you can seal everything with glue and hot glue or whatever you think is useful, so no water can get in the module. Be careful though, you do not want to get any glue in the micro-USB socket.
+* If everything works, assemble the hardware in the chassis to find out and mark where you want to drill the holes (you need a hole for every 3.5mm socket, one for the button, and a slot for the micro-USB socket). Then drill the holes, next assemble and fix everything to the chassis. Don't forget to test if everything works. Additionally you can seal everything with glue and hot glue or whatever you think is useful, so no water can get in the module, or at least hardly any. Be careful though, you do not want to get any glue in the micro-USB socket.
 * Have fun
 
 Questions? Ask me via olexolex at gmx dot de.
@@ -97,4 +101,4 @@ Questions? Ask me via olexolex at gmx dot de.
 
 ## Licence
 
-See Licence.txt
+See [Licence.txt](https://github.com/OlexOlex/TPE-Module/blob/master/Licence.txt)
