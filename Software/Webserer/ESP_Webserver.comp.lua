@@ -211,7 +211,7 @@ print("Power off")
 gpio.write(8,gpio.LOW)
 end
 e=e.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"
-if(cfg.wifitype~="ap")then
+if(wifi.sta.status()==5)then
 e=e.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
 end
 e=e..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"

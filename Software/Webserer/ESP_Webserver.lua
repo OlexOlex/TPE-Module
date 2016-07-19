@@ -302,8 +302,10 @@ srv:listen(80,function(conn)
              
             -- depending on the version of NodeMCU you need adc.readvdd33() (to read the internal supply voltage) or (adc.read(0)*4) (to read the external voltage on pin ADC using 1.5k to GND and 4.7k to VBat (1 Cell LiPo)
             buf = buf.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"
-            if(cfg.wifitype ~= "ap")then
-               buf = buf.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
+            -- not sufficient:
+            --if(cfg.wifitype ~= "ap")then
+            if(wifi.sta.status() == 5) then
+                buf = buf.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
             end
             buf = buf..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
             
