@@ -1,7 +1,3 @@
-function blink(e)
-gpio.write(e,gpio.HIGH)
-gpio.write(e,gpio.LOW)
-end
 function seqOpt(t,a)
 local e="<option"
 if(t=="-")then
@@ -85,7 +81,6 @@ collectgarbage()
 print("Webserver v1.0")
 wificfg={}
 cfg={}
-maxpwmvalue=1023
 if(file.open("ESPWebserver.conf")~=nil)then
 print("Webserver config opened")
 currline=file.readline()
@@ -100,6 +95,9 @@ end
 file.close()
 else
 print("ERROR opening ESPWebserver.conf")
+end
+if(wifi.sta.sethostname(cfg.hostname)==true)then
+print("hostname set")
 end
 pwm.setup(cfg.pwm1pin,100,0)
 pwm.setup(cfg.pwm2pin,100,0)
@@ -212,8 +210,11 @@ if(t.pwd==cfg.pwd and t.off=="1")then
 print("Power off")
 gpio.write(8,gpio.LOW)
 end
-e=e.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/>"
-e=e.."<br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
+e=e.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"
+if(cfg.wifitype~="ap")then
+e=e.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
+end
+e=e..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
 elseif(a=="/c")then
 if(t.pwd==cfg.pwd)then
 if(t.alloff=="1")then
@@ -252,7 +253,7 @@ if((t.pwm1~=nil)and(seq1=="-")and cfg.pwm1en=="en")then
 tmr.stop(1)
 pwm1preratio=tonumber(t.pwm1)
 if(pwm1preratio~=nil)then
-if((pwm1preratio<=maxpwmvalue)and(pwm1preratio>=0))then
+if((pwm1preratio<=1023)and(pwm1preratio>=0))then
 pwm1rate=pwm1preratio
 pwm.setduty(cfg.pwm1pin,pwm1rate)
 end
@@ -262,7 +263,7 @@ if((t.pwm2~=nil)and(seq2=="-")and cfg.pwm2en=="en")then
 tmr.stop(2)
 pwm2preratio=tonumber(t.pwm2)
 if(pwm2preratio~=nil)then
-if((pwm2preratio<=maxpwmvalue)and(pwm2preratio>=0))then
+if((pwm2preratio<=1023)and(pwm2preratio>=0))then
 pwm2rate=pwm2preratio
 pwm.setduty(cfg.pwm2pin,pwm2rate)
 end
@@ -272,7 +273,7 @@ if((t.pwm3~=nil)and(seq3=="-")and cfg.pwm3en=="en")then
 tmr.stop(3)
 pwm3preratio=tonumber(t.pwm3)
 if(pwm3preratio~=nil)then
-if((pwm3preratio<=maxpwmvalue)and(pwm3preratio>=0))then
+if((pwm3preratio<=1023)and(pwm3preratio>=0))then
 pwm3rate=pwm3preratio
 pwm.setduty(cfg.pwm3pin,pwm3rate)
 end
@@ -312,12 +313,14 @@ i:close()
 if(t.pwd==cfg.pwd)then
 if(t.pin1~=nil and cfg.pin1en=="en")then
 if(t.pin1=="1")then
-blink(cfg.pin1)
+gpio.write(cfg.pin1,gpio.HIGH)
+gpio.write(cfg.pin1,gpio.LOW)
 end
 end
 if(t.pin2~=nil and cfg.pin2en=="en")then
 if(t.pin2=="1")then
-blink(cfg.pin2)
+gpio.write(cfg.pin2,gpio.HIGH)
+gpio.write(cfg.pin2,gpio.LOW)
 end
 end
 if(newseq1==1 and cfg.pwm1en=="en")then

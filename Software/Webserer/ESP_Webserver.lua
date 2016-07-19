@@ -1,8 +1,3 @@
-function blink(pin)
-    gpio.write(pin, gpio.HIGH)
-    gpio.write(pin, gpio.LOW)
-end
-
 function seqOpt(selectedSeq, files)
     local tempbuf = "<option"
     if(selectedSeq == "-") then
@@ -72,7 +67,7 @@ end
 function onWifiCon()
     local ssid, _, _, _=wifi.sta.getconfig()
     print("connected to wifi "..ssid)
-    -- important: works only wiht nodemcu newer than 05.01.2016
+    -- important: works only with nodemcu newer than 05.01.2016
     wifi.sta.sethostname(cfg.hostname)
 end
 
@@ -119,8 +114,6 @@ print("Webserver v1.0")
 wificfg = {}
 cfg = {}
 
-maxpwmvalue = 1023 -- hardware constant
-
 -- read server config file
 if(file.open("ESPWebserver.conf") ~= nil)then
     print("Webserver config opened")
@@ -141,7 +134,9 @@ else
 end
 
 -- important: works only wiht nodemcu newer than 05.01.2016
---wifi.sta.sethostname(cfg.hostname)
+if(wifi.sta.sethostname(cfg.hostname) == true) then
+    print("hostname set")
+end
 
 
 -- initialize PWM output
@@ -167,7 +162,7 @@ newseq1 = 0
 newseq2 = 0
 newseq3 = 0
 
--- register Callbacks to ensure wifi connection
+-- register Callbacks to ensure wifi connectivity
 wifi.sta.eventMonReg(wifi.STA_GOTIP, onWifiCon)
 wifi.sta.eventMonReg(wifi.STA_WRONGPWD, function() print("Wrong password for wifi network"); wifi.sta.getap(connectToWifi) end)
 wifi.sta.eventMonReg(wifi.STA_APNOTFOUND, function() print("Wifi network no longer exists"); wifi.sta.getap(connectToWifi) end)
@@ -255,6 +250,7 @@ for currfile,_ in pairs(seqfiles) do
     file.close()
 end
 -- now forget about the size information and free heap space
+-- not used since it would use too much ram while cleaning...
 --seqfiles = {}
 --for currfile,_ in pairs(seqfilelists) do
     --table.insert(seqfiles, currfile)
@@ -305,8 +301,11 @@ srv:listen(80,function(conn)
             end
              
             -- depending on the version of NodeMCU you need adc.readvdd33() (to read the internal supply voltage) or (adc.read(0)*4) (to read the external voltage on pin ADC using 1.5k to GND and 4.7k to VBat (1 Cell LiPo)
-            buf = buf.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/>"
-            buf = buf.."<br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
+            buf = buf.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"
+            if(cfg.wifitype ~= "ap")then
+               buf = buf.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
+            end
+            buf = buf..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
             
         elseif(path == "/c") then
             --print("got a config request")
@@ -354,7 +353,7 @@ srv:listen(80,function(conn)
                         tmr.stop(1)
                         pwm1preratio = tonumber(_POST.pwm1)
                         if(pwm1preratio ~= nil) then
-                            if( ( pwm1preratio <= maxpwmvalue ) and ( pwm1preratio >=0 ) ) then
+                            if( ( pwm1preratio <= 1023 ) and ( pwm1preratio >=0 ) ) then
                                 pwm1rate = pwm1preratio
                                 pwm.setduty(cfg.pwm1pin, pwm1rate)
                             end
@@ -366,7 +365,7 @@ srv:listen(80,function(conn)
                         tmr.stop(2)
                         pwm2preratio = tonumber(_POST.pwm2)
                         if(pwm2preratio ~= nil) then
-                            if( ( pwm2preratio <= maxpwmvalue ) and ( pwm2preratio >=0 ) ) then
+                            if( ( pwm2preratio <= 1023 ) and ( pwm2preratio >=0 ) ) then
                                 pwm2rate = pwm2preratio
                                 pwm.setduty(cfg.pwm2pin, pwm2rate)
                             end
@@ -378,7 +377,7 @@ srv:listen(80,function(conn)
                         tmr.stop(3)
                         pwm3preratio = tonumber(_POST.pwm3)
                         if( pwm3preratio ~= nil ) then
-                            if( ( pwm3preratio <= maxpwmvalue ) and ( pwm3preratio >=0 ) ) then
+                            if( ( pwm3preratio <= 1023 ) and ( pwm3preratio >=0 ) ) then
                                 pwm3rate = pwm3preratio
                                 pwm.setduty(cfg.pwm3pin, pwm3rate)
                             end
@@ -440,13 +439,17 @@ srv:listen(80,function(conn)
             -- take care of the binary pin functions and start PWM sequences, now that the request was answered
             if(_POST.pin1 ~= nil and cfg.pin1en == "en") then
                 if( _POST.pin1 == "1" ) then
-                    blink(cfg.pin1)
+                    gpio.write(cfg.pin1, gpio.HIGH)
+                    -- optionally wait for X ms
+                    gpio.write(cfg.pin1, gpio.LOW)
                 end
             end
 
             if(_POST.pin2 ~= nil and cfg.pin2en == "en") then
                 if( _POST.pin2 == "1" ) then
-                    blink(cfg.pin2)
+                    gpio.write(cfg.pin2, gpio.HIGH)
+                    -- optionally wait for X ms
+                    gpio.write(cfg.pin2, gpio.LOW)
                 end
             end
 

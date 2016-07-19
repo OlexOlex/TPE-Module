@@ -26,3 +26,40 @@ off    if off=1 is passed, the module turns itself off
 
 A sample wget command should be:
 wget node-XXXX/c?pwm1=300&seq3=tease&pin2=1&pwd=mypassword
+wget node-XXXX/s?off=1&pwd=mypassword
+
+
+ESPWIFI.conf file format
+each line starting with a # character is considered a comment
+each other line needs to be of the format
+SSID=password
+the first SSID=password pair is used for the WiFi accesspoint (enter any ssid/password pair if you don't use the accesspoint)
+any further line SSID=password line is used foconnecting to wifis having this ssid
+
+ESPServer.conf file format
+each line starting with a # character is considered a comment
+each other line needs to be of the format
+parameter=value
+see ESPServer.conf sample files to see the needed parameters (English and German, the comments will help you understanding each entry)
+
+
+
+Sequence file format:
+
+first line tells:
+pwmsequence
+
+each further line defines the pwm value (0-1023) which will be set for the next period of x miliseconds 
+e.g.:
+1023, 4000
+or
+177, 2374
+or
+0, 100
+
+
+last line:
+repeat=infinite
+for infinite repeat of the sequence (until another sequence gets activated), or
+repeat, 1
+to just run the sequence once (turns off when done or another sequence gets activated)
