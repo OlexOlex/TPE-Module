@@ -1,3 +1,4 @@
+-- builds the HTML-options for drop down lists of the sequences
 function seqOpt(selectedSeq, files)
     local tempbuf = "<option"
     if(selectedSeq == "-") then
@@ -16,12 +17,14 @@ function seqOpt(selectedSeq, files)
     return tempbuf 
 end
 
+
 -- reads next pwm - timedelta pair, sets the pwm value and the timer
 function nextSeqStep(seqname, pwmpin, timerID, currStep)
     local f = file.open(seqname);
     if(f == true) then
         currStep = currStep + 1
-        -- read initial line (has no information) plus x steps on. Done in the for loop since lua only compares whether the value is larger in such for loops...
+        -- read initial line (has no information) plus x steps on.
+        -- Initial line always read in the for loop since lua only compares whether the value is larger in such for loops
         for i = 0, currStep, 1 do
             line = file.readline();
         end
@@ -63,6 +66,7 @@ function nextSeqStep(seqname, pwmpin, timerID, currStep)
     end
 end
 
+
 -- react to successful connection to a wifi network
 function onWifiCon()
     local ssid, _, _, _=wifi.sta.getconfig()
@@ -70,6 +74,7 @@ function onWifiCon()
     -- important: works only with nodemcu newer than 05.01.2016
     wifi.sta.sethostname(cfg.hostname)
 end
+
 
 -- search for the first known wifi accesspoint and connect to it
 function connectToWifi(aplist)
@@ -90,6 +95,7 @@ function connectToWifi(aplist)
             end)
 end
 
+
 -- raise CPU frequency for startup
 node.setcpufreq(node.CPU160MHZ)
 -- turn power on (so the Power button does not need to be pushed anymore)
@@ -99,7 +105,6 @@ gpio.write(8, gpio.HIGH)
 
 
 collectgarbage()
-print("Webserver v1.0")
 
 
 -- make sure to use the right ADC mode (if wrong mode was set, restart the module with adjusted settings)
@@ -109,6 +114,7 @@ print("Webserver v1.0")
 --if(adc.force_init_mode(adc.INIT_VDD33))then
     --node.restart()
 --end
+-- maybe you need to do that once from "command line interface" in ESPlorer...
 
 -- initial field declaration
 wificfg = {}
@@ -144,10 +150,11 @@ pwm.start(cfg.pwm1pin)
 pwm.start(cfg.pwm2pin) 
 pwm.start(cfg.pwm3pin)
 
+-- configure binary pins as outputs
 gpio.mode(cfg.pin1, gpio.OUTPUT)
 gpio.mode(cfg.pin2, gpio.OUTPUT)
 
--- initialize variables
+-- initialize global variables
 pwm1rate = 0
 pwm2rate = 0
 pwm3rate = 0
@@ -158,10 +165,15 @@ newseq1 = 0
 newseq2 = 0
 newseq3 = 0
 
--- register Callbacks to ensure wifi connectivity
+
+-- register Callbacks to ensure wifi connectivity:
+
+-- call function onWifiCon() for debug output and another try to set the hostname
 wifi.sta.eventMonReg(wifi.STA_GOTIP, onWifiCon)
+
+-- when connecting did fail or the connection to a network broke, print debug output and try to reconnect by calling function connectToWifi()
 wifi.sta.eventMonReg(wifi.STA_WRONGPWD, function() print("Wrong password for wifi network"); wifi.sta.getap(connectToWifi) end)
-wifi.sta.eventMonReg(wifi.STA_APNOTFOUND, function() print("Wifi network no longer exists"); wifi.sta.getap(connectToWifi) end)
+wifi.sta.eventMonReg(wifi.STA_APNOTFOUND, function() print("Wifi network disappeared"); wifi.sta.getap(connectToWifi) end)
 wifi.sta.eventMonReg(wifi.STA_FAIL, function() print("Failed to connect to wifi network. Unknown reason"); wifi.sta.getap(connectToWifi) end)
 
 -- read wifi config file
@@ -230,7 +242,8 @@ end
 -- and might not work all the time, instantly and properly due to dev state of NodeMCU
 wifi.sta.sethostname(cfg.hostname)
 
--- finds sequence files and returns a list of their names
+
+-- finds sequence files and returns a list of their names for later use
 seqfiles = file.list() 
 -- use filename, ignore size
 for currfile,_ in pairs(seqfiles) do
@@ -251,23 +264,16 @@ for currfile,_ in pairs(seqfiles) do
     end
     file.close()
 end
--- now forget about the size information and free heap space
--- not used since it would use too much ram while cleaning...
---seqfiles = {}
---for currfile,_ in pairs(seqfilelists) do
-    --table.insert(seqfiles, currfile)
-    --seqfilelists[currfile] = nil
---end
--- free memory
---seqfilelists = nil
 
-print("starting server")
+
+print("starting server v1.2")
 
 -- start server
 srv=net.createServer(net.TCP)
 
 -- lower CPU frequency to default value for lower power consumption when waiting for website requests
 node.setcpufreq(node.CPU80MHZ)
+
 
 -- define server function to react on requests on port 80
 srv:listen(80,function(conn)
@@ -280,6 +286,8 @@ srv:listen(80,function(conn)
         local buf = "<!DOCTYPE html><html>"
         -- get ending of url
         local path = string.match(request, "POST (.+) HTTP/.*")
+        
+        -- GET does not work properly by now
         if(path == nil) then
             path = string.match(request, "GET (.+) HTTP/.*")
         end
