@@ -54,6 +54,7 @@ The website can look like this in english, there is an english and a german samp
 * The voltage reading is rough (only real numbers, no float numbers available for multiplication in the integer version of nodeMCU which is needed for reducing RAM usage)
 * The requests are unencrypted HTTP-POST requests - no ssl encryption used
 * The Lua-interpreter-firmware (NodeMCU) is still under (heavy?) development, so some functionalities change (for the voltage measuring standard source and the hostname setup I experienced it), and before acessing the filesystem via ESPlorer, you might need to send the =node.heap() command ("Heap"-button) a few times to synchronize the connection
+* You could crash the system and force it to reboot by malicously manufactured requests. Requires advanced knowledge.
 
 
 ## Material used for this "full feature" Model:
