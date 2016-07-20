@@ -133,10 +133,6 @@ else
     print("ERROR opening ESPWebserver.conf")
 end
 
--- important: works only wiht nodemcu newer than 05.01.2016
-if(wifi.sta.sethostname(cfg.hostname) == true) then
-    print("hostname set")
-end
 
 
 -- initialize PWM output
@@ -228,6 +224,12 @@ else
     print("Unknown wifi mode specified")
 end
 
+
+-- (try to) set hostname for easy access when connected to a WiFi network
+-- important: works only wiht nodemcu newer than 05.01.2016
+-- and might not work all the time, instantly and properly due to dev state of NodeMCU
+wifi.sta.sethostname(cfg.hostname)
+
 -- finds sequence files and returns a list of their names
 seqfiles = file.list() 
 -- use filename, ignore size
@@ -259,12 +261,15 @@ end
 -- free memory
 --seqfilelists = nil
 
--- lower CPU frequency again for lower power consumption
-node.setcpufreq(node.CPU80MHZ)
-
 print("starting server")
+
 -- start server
 srv=net.createServer(net.TCP)
+
+-- lower CPU frequency to default value for lower power consumption when waiting for website requests
+node.setcpufreq(node.CPU80MHZ)
+
+-- define server function to react on requests on port 80
 srv:listen(80,function(conn)
     conn:on("receive", function(client,request)
         -- raise CPU frequency until done
@@ -289,12 +294,10 @@ srv:listen(80,function(conn)
         end
         -- react according to the url ending
         if(path == nil or path == "/") then
-            --print("got a general request")
             buf = buf.."<head><title>"..cfg.servername.."</title><meta name=\"viewport\" content=\"width=300, initial-scale=1, maximum-scale=5\"></head><body><font size=\""..cfg.titlesize.."\">"
-            buf = buf..cfg.servername.."</font><br><br><a href=\"c\" target=\"m\">"..cfg.configstr.."</a> <a href=\"s\" target=\"m\">"..cfg.statusstr
+            buf =buf..cfg.servername.."</font><br><br><a href=\"c\" target=\"m\">"..cfg.configstr.."</a> <a href=\"s\" target=\"m\">"..cfg.statusstr
             buf = buf.."</a><br><iframe name=\"m\" src=\"c\" height=\""..cfg.frameh.."\" width=\""..cfg.framew.."\"></iframe></body></html>"
         elseif(path == "/s") then
-            --print("got status request")
             if(_POST.pwd == cfg.pwd and _POST.off == "1") then
                 print("Power off")
                 gpio.write(8, gpio.LOW)
@@ -303,14 +306,13 @@ srv:listen(80,function(conn)
             -- depending on the version of NodeMCU you need adc.readvdd33() (to read the internal supply voltage) or (adc.read(0)*4) (to read the external voltage on pin ADC using 1.5k to GND and 4.7k to VBat (1 Cell LiPo)
             buf = buf.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"
             -- if connected to a WiFi, 
-            -- TODO: change magic number 5 to proper constant WIFI.sta.CONNECTED or something
-            if(wifi.sta.status() == 5) then
+            -- wifi.STA_GOTIP is way better than magic number 5
+            if(wifi.sta.status() == wifi.STA_GOTIP) then
                 buf = buf.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
             end
             buf = buf..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
             
         elseif(path == "/c") then
-            --print("got a config request")
             -- if the password is right or no password to be asked for
             if(_POST.pwd == cfg.pwd) then
                 -- turn all gpio, pwm, timer off and do nothing else but respond

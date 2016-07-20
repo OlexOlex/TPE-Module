@@ -96,9 +96,6 @@ file.close()
 else
 print("ERROR opening ESPWebserver.conf")
 end
-if(wifi.sta.sethostname(cfg.hostname)==true)then
-print("hostname set")
-end
 pwm.setup(cfg.pwm1pin,100,0)
 pwm.setup(cfg.pwm2pin,100,0)
 pwm.setup(cfg.pwm3pin,100,0)
@@ -168,6 +165,7 @@ wifi.sta.getap(connectToWifi)
 else
 print("Unknown wifi mode specified")
 end
+wifi.sta.sethostname(cfg.hostname)
 seqfiles=file.list()
 for e,t in pairs(seqfiles)do
 file.open(e)
@@ -183,9 +181,9 @@ seqfiles[e]=nil
 end
 file.close()
 end
-node.setcpufreq(node.CPU80MHZ)
 print("starting server")
 srv=net.createServer(net.TCP)
+node.setcpufreq(node.CPU80MHZ)
 srv:listen(80,function(e)
 e:on("receive",function(i,o)
 node.setcpufreq(node.CPU160MHZ)
@@ -211,7 +209,7 @@ print("Power off")
 gpio.write(8,gpio.LOW)
 end
 e=e.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"
-if(wifi.sta.status()==5)then
+if(wifi.sta.status()==wifi.STA_GOTIP)then
 e=e.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
 end
 e=e..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
