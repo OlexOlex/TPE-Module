@@ -23,7 +23,7 @@ The website can look like this in english, there is an english and a german samp
 
 ## Features:
 * Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**, e.g. control it via your home WIFI or outside via the accesspoint
-* **Control via web page** in any modern browser (Tested with Firefox, Chromium and Android 4.4 browser) on any system in the same network - you can also control it via HTTP-GET messages, e.g. by using wget on linux
+* **Control via web page** in any modern browser (Tested with Firefox, Chromium and Android 4.4 browser) on any system in the same network - you can also control it with anything that can send HTTP-POST request, e.g. with curl or wget from a linux server, e.g. in a cromjob or bash-/shellscript on a Raspberry Pi
 * **No need for a dedicated app**, call the webpage from the private browsing window of your business cell phone and no traces are left, "Is my platform supported?" is answered by "If it has a browser and network access, most probably yes"
 * Controls up to **three vibrators** or other things/external modules 0 - 1023 (though the  1-150 are usually useless for vibrators) or runs sequences on the vibrators that are defined in customizable sequence files
 * Controls up to **two other external modules** like e-stim, a magnetic (un)lock, a beeper, etc. (gives a short on-signal)
@@ -44,7 +44,7 @@ The website can look like this in english, there is an english and a german samp
 * Any simple 3-4V vibrating device with a remote control on a cable can easily be converted to fit this module (and if you solder a socket to the original remote control, you can still use the device with the original remote control )
 
 ### Disadvantages:
-* If a browser splits an HTTP-POST request to multiple packets (one the HTTP-request, one containing the POST-parameters) it might not work or need a page reload after every request to display the current settings (quickfix for you might be to change a forms request type from POST to GET at two places where the code returns a webpage)
+* If a browser splits an HTTP-POST request to multiple packets (one the HTTP-request, one containing the POST-parameters) it might not work or need a page reload after every request to display the current settings (quickfix for you might be to change a forms request type from POST to GET at two places where the code returns a webpage and change further things)
 * It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here] - once NodeMCU behaviour seems to have changed at that point as well
 
 ### Minor "not as perfect as it could be" properties:
