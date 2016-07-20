@@ -23,7 +23,7 @@ The website can look like this in english, there is an english and a german samp
 
 ## Features:
 * Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**, e.g. control it via your home WIFI or outside via the accesspoint
-* **Control via web page** in any modern browser (Tested with Firefox, Chromium and Android 4.4 browser) on any system in the same network - you can also control it with anything that can send HTTP-POST request, e.g. with curl or wget from a linux server, e.g. in a cromjob or bash-/shellscript on a Raspberry Pi
+* **Control via web page** in most modern browsers on most systems in the same network (Tested on linux and Android 4.4, only Windows seems to make trouble) - you can also control it with anything that can send HTTP-POST request, e.g. with curl or wget from a linux server, e.g. in a cronjob or bash-/shellscript on a Raspberry Pi
 * **No need for a dedicated app**, call the webpage from the private browsing window of your business cell phone and no traces are left, "Is my platform supported?" is answered by "If it has a browser and network access, most probably yes"
 * Controls up to **three vibrators** or other things/external modules 0 - 1023 (though the  1-150 are usually useless for vibrators) or runs sequences on the vibrators that are defined in customizable sequence files
 * Controls up to **two other external modules** like e-stim, a magnetic (un)lock, a beeper, etc. (gives a short on-signal)
@@ -39,12 +39,13 @@ The website can look like this in english, there is an english and a german samp
 * Sockets provide ground, battery voltage and the signal (on = tied to ground, max 0.5A each, max ~3A alltogether until the battery protection turns off power. off = no potential) when the module is turned on, so you can permanently **power external modules/cirquits if needed**, or **run a motor directly** between the signal line and the battery voltage line
 * Charge it and access the integrated file system by the integrated usb-serial-adapter with a common **micro USB** cable
 * **Noncommercially open source** - details see Licence.txt (tl;dr: No guarantees on anything, use at your own risk, if you think it's good, buy me a beer when we meet or be a good guy in general. In case you want to use it commercially, contact me and we'll find an agreement)
-* Material cost: **~14€** for me when buying the stuff in China. I bought it at Aliexpress and then waited for 1.5 Months for most of the items to arrive. Two never arrived, I got a refund and got them somewhere else, that is why the ULN2003 module is replaced by a single ULN2003A Chip in the Photos. I got a cheap offer for the battery, you might have to pay 2-3€ more. A list of the parts is in an OpenOffice spreadsheet in the Hardware+Chassis directory, Ebay and other sources might be good sources as well)
+* Material cost: **approximately 14€** for me when buying the stuff in China. Buy it at Aliexpress and then wait for 1.5 months for the items to arrive. (For me two never arrived, I got a refund and got them somewhere else, that is why the ULN2003 module is replaced by a single ULN2003A chip in the photos) A list of the parts is in an OpenOffice spreadsheet in the Hardware+Chassis directory, Ebay and other sources might be good sources as well)
 * **Relatively easy to build, most parts are premanufactured ready-to-use-modules**, the connectors are common 3.5mm stereo jacks
 * Any simple 3-4V vibrating device with a remote control on a cable can easily be converted to fit this module (and if you solder a socket to the original remote control, you can still use the device with the original remote control )
 
 ### Disadvantages:
-* If a browser splits an HTTP-POST request to multiple packets (one the HTTP-request, one containing the POST-parameters) it might not work or need a page reload after every request to display the current settings (quickfix for you might be to change a forms request type from POST to GET at two places where the code returns a webpage and change further things)
+* Does not (yet?) work with browsers on Windows (tested on Windows 8.1 with Internet Explorer, Google Chrome and Firefox)
+* If a browser/system splits an HTTP-POST request to multiple packets (one the HTTP-request, one containing the POST-parameters) it might not work or need a page reload after every request to display the current settings (quickfix for you might be to change a forms request type from POST to GET at two places where the code returns a webpage and change the standard mapping for POST requests to the alternative GET variant)
 * It sometimes takes a while until the router knows the device under its configured name, so it might take some time until you can access it at http://[your configured servername here] - once NodeMCU behaviour seems to have changed at that point as well
 
 ### Minor "not as perfect as it could be" properties:
@@ -100,6 +101,15 @@ Detailed information and sample links to the product pages of some online shops 
 * Have fun
 
 Questions? Ask me via olexolex at gmx dot de.
+
+## Tested on the following platforms:
+Worked on
+* Android 4.4 - Android Browser, Firefox
+* Kubuntu Linux - Firefox, Chromium
+* Linux command line - curl
+
+Changing settings did not work on
+* Windows 8.1 - Firefox, Google Chrome, Internet Explorer
 
 
 ## Licence
