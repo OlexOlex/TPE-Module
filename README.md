@@ -19,7 +19,7 @@ The Module with an attached vibrating bullet can look like this:
 
 The website can look like this in english, there is an english and a german sample config file available (enable or disable any output, name anything as you wish. The "Unlock" and "Beep" are just an example, you need to attach a custom module to an output port in order to get any functionality from the two binary outputs)
 
-![Main website screenshot](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/English_website_v1.0.png) ![Status and turn-off website screenshot](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/English_website_status_v1.0.png)
+![Main website screenshot](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/English_website_v1.0.png) ![Status and turn-off website screenshot](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/English_website_status_wifi_v1.1.png)
 
 ## Features:
 * Provides a **WIFI-accesspoint** and/or **connects to a (list of) WIFI(s)**, e.g. control it via your home WIFI or outside via the accesspoint
