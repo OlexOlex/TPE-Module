@@ -7,12 +7,12 @@ The POST or GET Parameters (both work, so you can use simple wget commands or si
 in all requests:
 pwd     The password. If password protection is enabled, this needs to be correct for any other option to be considered
 
-in requests from the /c page:
-pwm1    The value to set the first pwm channel to. Value range: 0-1023 (only relevant if the current sequence is "-" or set to "-" in the same request)
+in requests for the /c "Control" page:
+pwm1    The value to set the first pwm channel to. Value range: 0-1023 (only relevant if the current sequence seq1 is "-" or set to "-" in the same request. Otherwise this value is ignored)
 seq1    The sequence to run for the first pwm channel. Values are any known sequences and "-" for no sequence to run but only the static pwm
-pwm2    The value to set the second pwm channel to (0-1023, only relevant if the current sequence is "-" or set to "-" in the same request)
+pwm2    The value to set the second pwm channel to. Value range: 0-1023 (only relevant if the current sequence seq2 is "-" or set to "-" in the same request. Otherwise this value is ignored)
 seq1    The sequence to run for the second pwm channel. Values are any known sequences and "-" for no sequence to run but only the static pwm
-pwm3    The value to set the third pwm channel to (0-1023, only relevant if the current sequence is "-" or set to "-" in the same request)
+pwm3    The value to set the third pwm channel to. Value range: 0-1023 (only relevant if the current sequence seq3 is "-" or set to "-" in the same request. Otherwise this value is ignored)
 seq1    The sequence to run for the third pwm channel. Values are any known sequences and "-" for no sequence to run but only the static pwm
 
 pin1    If pin1=1 passed, the appropriate output will turn on for a (very) short time
@@ -20,23 +20,36 @@ pin2    If pin2=1 passed, the appropriate output will turn on for a (very) short
 
 alloff  If alloff=1 is passed, all outputs are turned off, all 
 
-in requests for the /s page:
+in requests for the /s "Status" page:
 off    if off=1 is passed, the module turns itself off
 
 
-A sample wget command should be:
-wget node-XXXX/c?pwm1=300&seq3=tease&pin2=1&pwd=mypassword
-wget node-XXXX/s?off=1&pwd=mypassword
+Sample curl commands, e.g. for usage in linux cronjobs or bash-/shellscripts:
+
+# deactivates any running sequence of output 1 and turns it to 300 of 1023 ("seq1=-&pwm1=300")
+# activates sequence "tease" for output 3 ("seq3=tease") and
+# activates binary output pin 2 for a short period of time ("pin2=1")
+# using the password ("pwd=mypassword")
+# at the control page of the module ("http://remote-control/c")
+curl --data "seq1=-&pwm1=300&seq3=tease&pin2=1&pwd=mypassword" http://remote-control/c
+
+# turns off module ("off=1")
+# using the password ("pwd=mypassword")
+# at the status page of the module ("http://remote-control/s")
+curl --data "off=1&pwd=mypassword" http://remote-control/s
 
 
 ESPWIFI.conf file format
+
 each line starting with a # character is considered a comment
 each other line needs to be of the format
 SSID=password
 the first SSID=password pair is used for the WiFi accesspoint (enter any ssid/password pair if you don't use the accesspoint)
-any further line SSID=password line is used foconnecting to wifis having this ssid
+any further SSID=password line is used for connecting to wifis having this ssid
+
 
 ESPServer.conf file format
+
 each line starting with a # character is considered a comment
 each other line needs to be of the format
 parameter=value
@@ -46,7 +59,7 @@ see ESPServer.conf sample files to see the needed parameters (English and German
 
 Sequence file format:
 
-first line tells:
+first line must read the following to identify the file as a sequence file:
 pwmsequence
 
 each further line defines the pwm value (0-1023) which will be set for the next period of x miliseconds 
