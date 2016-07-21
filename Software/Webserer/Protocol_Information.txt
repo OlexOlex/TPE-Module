@@ -9,11 +9,11 @@ pwd     The password. If password protection is enabled, this needs to be correc
 
 in requests for the /c "Control" page:
 pwm1    The value to set the first pwm channel to. Value range: 0-1023 (only relevant if the current sequence seq1 is "-" or set to "-" in the same request. Otherwise this value is ignored)
-seq1    The sequence to run for the first pwm channel. Values are any known sequences and "-" for no sequence to run but only the static pwm
+seq1    The sequence to run for the first pwm channel. Value is one of any known sequences or "-" for no sequence to run but only the static pwm
 pwm2    The value to set the second pwm channel to. Value range: 0-1023 (only relevant if the current sequence seq2 is "-" or set to "-" in the same request. Otherwise this value is ignored)
-seq1    The sequence to run for the second pwm channel. Values are any known sequences and "-" for no sequence to run but only the static pwm
+seq1    The sequence to run for the second pwm channel. Value is one of any known sequences or "-" for no sequence to run but only the static pwm
 pwm3    The value to set the third pwm channel to. Value range: 0-1023 (only relevant if the current sequence seq3 is "-" or set to "-" in the same request. Otherwise this value is ignored)
-seq1    The sequence to run for the third pwm channel. Values are any known sequences and "-" for no sequence to run but only the static pwm
+seq1    The sequence to run for the third pwm channel. Value is one of any known sequences or "-" for no sequence to run but only the static pwm
 
 pin1    If pin1=1 passed, the appropriate output will turn on for a (very) short time
 pin2    If pin2=1 passed, the appropriate output will turn on for a (very) short time
@@ -70,9 +70,8 @@ or
 or
 0, 100
 
-
-last line:
-repeat=infinite
+ast line must read :
+repeat, infinite
 for infinite repeat of the sequence (until another sequence gets activated), or
 repeat, 1
 to just run the sequence once (turns off when done or another sequence gets activated)
