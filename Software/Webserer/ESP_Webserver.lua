@@ -20,13 +20,13 @@ end
 
 -- reads next pwm - timedelta pair, sets the pwm value and the timer
 function nextSeqStep(seqname, pwmpin, timerID, currStep)
-    local f = file.open(seqname);
+    local f = file.open(seqname)
     if(f == true) then
         currStep = currStep + 1
         -- read initial line (has no information) plus x steps on.
         -- Initial line always read in the for loop since lua only compares whether the value is larger in such for loops
         for i = 0, currStep, 1 do
-            line = file.readline();
+            line = file.readline()
         end
         file.close()
         if(line == nil) then
@@ -99,7 +99,7 @@ end
 -- raise CPU frequency for startup
 node.setcpufreq(node.CPU160MHZ)
 -- turn power on (so the Power button does not need to be pushed anymore)
--- GPIO15 used for this
+-- GPIO15 is used for this, poweres a NPN transistor for driving a high current FET
 gpio.mode(8, gpio.OUTPUT)
 gpio.write(8, gpio.HIGH)
 
@@ -266,7 +266,7 @@ for currfile,_ in pairs(seqfiles) do
 end
 
 
-print("starting server v1.2")
+print("starting server v1.3")
 
 -- start server
 srv=net.createServer(net.TCP)
@@ -300,109 +300,102 @@ srv:listen(80,function(conn)
                _POST[k] = v
             end
         end
-        -- react according to the url ending
-        if(path == nil or path == "/") then
-            buf = buf.."<head><title>"..cfg.servername.."</title><meta name=\"viewport\" content=\"width=300, initial-scale=1, maximum-scale=5\"></head><body><font size=\""..cfg.titlesize.."\">"
-            buf =buf..cfg.servername.."</font><br><br><a href=\"c\" target=\"m\">"..cfg.configstr.."</a> <a href=\"s\" target=\"m\">"..cfg.statusstr
-            buf = buf.."</a><br><iframe name=\"m\" src=\"c\" height=\""..cfg.frameh.."\" width=\""..cfg.framew.."\"></iframe></body></html>"
-        elseif(path == "/s") then
-            if(_POST.pwd == cfg.pwd and _POST.off == "1") then
+        
+        
+        
+        
+        -- if the password is right or no password to be asked for
+        if(_POST.pwd == cfg.pwd) then
+            if(_POST.off == "1") then
+                -- debug output and turn power of
                 print("Power off")
                 gpio.write(8, gpio.LOW)
-            end
-             
-            -- depending on the version of NodeMCU you need adc.readvdd33() (to read the internal supply voltage) or (adc.read(0)*4) (to read the external voltage on pin ADC using 1.5k to GND and 4.7k to VBat (1 Cell LiPo)
-            buf = buf.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"
-            -- if connected to a WiFi, 
-            -- wifi.STA_GOTIP is way better than magic number 5
-            if(wifi.sta.status() == wifi.STA_GOTIP) then
-                buf = buf.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
-            end
-            buf = buf..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
             
-        elseif(path == "/c") then
-            -- if the password is right or no password to be asked for
-            if(_POST.pwd == cfg.pwd) then
-                -- turn all gpio, pwm, timer off and do nothing else but respond
-                if(_POST.alloff == "1") then
-                    tmr.stop(1)
-                    tmr.stop(2)
-                    tmr.stop(3)
-                    pwm.setduty(cfg.pwm1pin, 0)
-                    pwm.setduty(cfg.pwm2pin, 0)
-                    pwm.setduty(cfg.pwm3pin, 0)
-                    pwm1rate = 0
-                    pwm2rate = 0
-                    pwm3rate = 0
-                    seq1 = "-"
-                    seq2 = "-"
-                    seq3 = "-"
-                    newseq1 = 0
-                    newseq2 = 0
-                    newseq3 = 0
-                else
-
-                    if((_POST.seq1 ~= nil) and (_POST.seq1 ~= seq1)) then
-                        seq1 = _POST.seq1
-                        newseq1 = 1
-                        pwm1rate = 0
-                    end
-
-                    if((_POST.seq2 ~= nil) and (_POST.seq2 ~= seq2)) then
-                        seq2 = _POST.seq2
-                        newseq2 = 1
-                        pwm2rate = 0
-                    end
-
-                    if((_POST.seq3 ~= nil) and (_POST.seq3 ~= seq3)) then
-                        seq3 = _POST.seq3
-                        newseq3 = 1
-                        pwm3rate = 0
-                    end
-
-                    if((_POST.pwm1 ~= nil) and (seq1 == "-") and cfg.pwm1en == "en") then
-                        -- make sure no sequence is running in parallel
-                        tmr.stop(1)
-                        pwm1preratio = tonumber(_POST.pwm1)
-                        if(pwm1preratio ~= nil) then
-                            if( ( pwm1preratio <= 1023 ) and ( pwm1preratio >=0 ) ) then
-                                pwm1rate = pwm1preratio
-                                pwm.setduty(cfg.pwm1pin, pwm1rate)
-                            end
-                        end
-                    end
-
-                    if((_POST.pwm2 ~= nil) and (seq2 == "-") and cfg.pwm2en == "en") then
-                        -- make sure no sequence is running in parallel
-                        tmr.stop(2)
-                        pwm2preratio = tonumber(_POST.pwm2)
-                        if(pwm2preratio ~= nil) then
-                            if( ( pwm2preratio <= 1023 ) and ( pwm2preratio >=0 ) ) then
-                                pwm2rate = pwm2preratio
-                                pwm.setduty(cfg.pwm2pin, pwm2rate)
-                            end
-                        end
-                    end
-
-                    if((_POST.pwm3 ~= nil) and (seq3 == "-") and cfg.pwm3en == "en") then
-                        -- make sure no sequence is running in parallel
-                        tmr.stop(3)
-                        pwm3preratio = tonumber(_POST.pwm3)
-                        if( pwm3preratio ~= nil ) then
-                            if( ( pwm3preratio <= 1023 ) and ( pwm3preratio >=0 ) ) then
-                                pwm3rate = pwm3preratio
-                                pwm.setduty(cfg.pwm3pin, pwm3rate)
-                            end
-                        end
-                    end
-                
-                end
+            -- turn all gpio, pwm, timer off and do nothing else but respond
+            elseif(_POST.alloff == "1") then
+                tmr.stop(1)
+                tmr.stop(2)
+                tmr.stop(3)
+                pwm.setduty(cfg.pwm1pin, 0)
+                pwm.setduty(cfg.pwm2pin, 0)
+                pwm.setduty(cfg.pwm3pin, 0)
+                pwm1rate = 0
+                pwm2rate = 0
+                pwm3rate = 0
+                seq1 = "-"
+                seq2 = "-"
+                seq3 = "-"
+                newseq1 = 0
+                newseq2 = 0
+                newseq3 = 0
             else
-                -- if password was not correct
-                -- do not send anything about it, the sending buffer might overflow
-                --buf = buf.."<font size=\"5\" color=\"red\"><b>"..cfg.wrongpasswordstr.."</b></font><br><br> "
-                print("wrong password")
+
+                if((_POST.seq1 ~= nil) and (_POST.seq1 ~= seq1)) then
+                    seq1 = _POST.seq1
+                    newseq1 = 1
+                    pwm1rate = 0
+                end
+
+                if((_POST.seq2 ~= nil) and (_POST.seq2 ~= seq2)) then
+                    seq2 = _POST.seq2
+                    newseq2 = 1
+                    pwm2rate = 0
+                end
+
+                if((_POST.seq3 ~= nil) and (_POST.seq3 ~= seq3)) then
+                    seq3 = _POST.seq3
+                    newseq3 = 1
+                    pwm3rate = 0
+                end
+
+                if((_POST.pwm1 ~= nil) and (seq1 == "-") and cfg.pwm1en == "en") then
+                    -- make sure no sequence is running in parallel
+                    tmr.stop(1)
+                    pwm1preratio = tonumber(_POST.pwm1)
+                    if(pwm1preratio ~= nil) then
+                        if( ( pwm1preratio <= 1023 ) and ( pwm1preratio >=0 ) ) then
+                            pwm1rate = pwm1preratio
+                            pwm.setduty(cfg.pwm1pin, pwm1rate)
+                        end
+                    end
+                end
+
+                if((_POST.pwm2 ~= nil) and (seq2 == "-") and cfg.pwm2en == "en") then
+                    -- make sure no sequence is running in parallel
+                    tmr.stop(2)
+                    pwm2preratio = tonumber(_POST.pwm2)
+                    if(pwm2preratio ~= nil) then
+                        if( ( pwm2preratio <= 1023 ) and ( pwm2preratio >=0 ) ) then
+                            pwm2rate = pwm2preratio
+                            pwm.setduty(cfg.pwm2pin, pwm2rate)
+                        end
+                    end
+                end
+
+                if((_POST.pwm3 ~= nil) and (seq3 == "-") and cfg.pwm3en == "en") then
+                    -- make sure no sequence is running in parallel
+                    tmr.stop(3)
+                    pwm3preratio = tonumber(_POST.pwm3)
+                    if( pwm3preratio ~= nil ) then
+                        if( ( pwm3preratio <= 1023 ) and ( pwm3preratio >=0 ) ) then
+                            pwm3rate = pwm3preratio
+                            pwm.setduty(cfg.pwm3pin, pwm3rate)
+                        end
+                    end
+                end
+                
             end
+        else
+            -- if password was not correct
+            -- do not send anything about it, the sending buffer might overflow
+            --buf = buf.."<font size=\"5\" color=\"red\"><b>"..cfg.wrongpasswordstr.."</b></font><br><br> "
+            -- print debug information
+            print("wrong password")
+        end
+        
+        -- react according to the url ending
+        -- if config (sub)page was requested, create it
+        if(path == "/c") then
             -- create HTML website
             -- start with sliders for PWM outputs
             buf = buf.."<body><form action=\"\" method=\"post\" ><font size=\""..cfg.textsize.."\" face=\"Verdana\">"
@@ -441,6 +434,30 @@ srv:listen(80,function(conn)
             -- print answer html site:
             --print(buf)
             --print("free heap: "..node.heap())
+            
+        -- if status (sub)page was requested, create it
+        elseif(path == "/s") then
+            -- depending on the version of NodeMCU you need adc.readvdd33() (to read the internal supply voltage) or (adc.read(0)*4) (to read the external voltage on pin ADC using 1.5k to GND and 4.7k to VBat (1 Cell LiPo)
+            buf = buf.."<body>"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"
+            -- if connected to a WiFi, 
+            -- wifi.STA_GOTIP is way better than magic number 5
+            if(wifi.sta.status() == wifi.STA_GOTIP) then
+                buf = buf.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
+            end
+            buf = buf..cfg.pwdstr.."<body><form action=\"\" method=\"post\"><input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\"></body></html>"
+            
+        -- if css file is requested, return it
+        elseif(path =="/css.css") then
+            -- file may contain max. 1024 characters 
+            if(file.open("css.css") ~= nil) then
+                buf = file.read()
+                file.close()
+            end
+        -- else return main page
+        else --if(path == nil or path == "/") then
+            buf = buf.."<head><title>"..cfg.servername.."</title><meta name=\"viewport\" content=\"width=300, initial-scale=1, maximum-scale=5\"></head><body><font size=\""..cfg.titlesize.."\">"
+            buf = buf..cfg.servername.."</font><br><br><a href=\"c\" target=\"m\">"..cfg.configstr.."</a> <a href=\"s\" target=\"m\">"..cfg.statusstr
+            buf = buf.."</a><br><iframe name=\"m\" src=\"c\" height=\""..cfg.frameh.."\" width=\""..cfg.framew.."\"></iframe></body></html>"
         end
         -- answer request
         client:send(buf)

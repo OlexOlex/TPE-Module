@@ -16,11 +16,11 @@ end
 return e
 end
 function nextSeqStep(i,o,n,a)
-local e=file.open(i);
+local e=file.open(i)
 if(e==true)then
 a=a+1
 for e=0,a,1 do
-line=file.readline();
+line=file.readline()
 end
 file.close()
 if(line==nil)then
@@ -78,7 +78,6 @@ node.setcpufreq(node.CPU160MHZ)
 gpio.mode(8,gpio.OUTPUT)
 gpio.write(8,gpio.HIGH)
 collectgarbage()
-print("Webserver v1.0")
 wificfg={}
 cfg={}
 if(file.open("ESPWebserver.conf")~=nil)then
@@ -115,7 +114,7 @@ newseq2=0
 newseq3=0
 wifi.sta.eventMonReg(wifi.STA_GOTIP,onWifiCon)
 wifi.sta.eventMonReg(wifi.STA_WRONGPWD,function()print("Wrong password for wifi network");wifi.sta.getap(connectToWifi)end)
-wifi.sta.eventMonReg(wifi.STA_APNOTFOUND,function()print("Wifi network no longer exists");wifi.sta.getap(connectToWifi)end)
+wifi.sta.eventMonReg(wifi.STA_APNOTFOUND,function()print("Wifi network disappeared");wifi.sta.getap(connectToWifi)end)
 wifi.sta.eventMonReg(wifi.STA_FAIL,function()print("Failed to connect to wifi network. Unknown reason");wifi.sta.getap(connectToWifi)end)
 wifis={}
 apcfg={}
@@ -181,7 +180,7 @@ seqfiles[e]=nil
 end
 file.close()
 end
-print("starting server")
+print("starting server v1.3")
 srv=net.createServer(net.TCP)
 node.setcpufreq(node.CPU80MHZ)
 srv:listen(80,function(e)
@@ -199,23 +198,11 @@ for a,e in string.gmatch(o,"([^=&]+)=([^&]+)&*")do
 t[a]=e
 end
 end
-if(a==nil or a=="/")then
-e=e.."<head><title>"..cfg.servername.."</title><meta name=\"viewport\" content=\"width=300, initial-scale=1, maximum-scale=5\"></head><body><font size=\""..cfg.titlesize.."\">"
-e=e..cfg.servername.."</font><br><br><a href=\"c\" target=\"m\">"..cfg.configstr.."</a> <a href=\"s\" target=\"m\">"..cfg.statusstr
-e=e.."</a><br><iframe name=\"m\" src=\"c\" height=\""..cfg.frameh.."\" width=\""..cfg.framew.."\"></iframe></body></html>"
-elseif(a=="/s")then
-if(t.pwd==cfg.pwd and t.off=="1")then
+if(t.pwd==cfg.pwd)then
+if(t.off=="1")then
 print("Power off")
 gpio.write(8,gpio.LOW)
-end
-e=e.."<body><form action=\"\" method=\"post\">"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"
-if(wifi.sta.status()==wifi.STA_GOTIP)then
-e=e.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
-end
-e=e..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\" size=\"7\"></body></html>"
-elseif(a=="/c")then
-if(t.pwd==cfg.pwd)then
-if(t.alloff=="1")then
+elseif(t.alloff=="1")then
 tmr.stop(1)
 tmr.stop(2)
 tmr.stop(3)
@@ -281,6 +268,7 @@ end
 else
 print("wrong password")
 end
+if(a=="/c")then
 e=e.."<body><form action=\"\" method=\"post\" ><font size=\""..cfg.textsize.."\" face=\"Verdana\">"
 if(cfg.pwm1en=="en")then
 e=e..cfg.pwm1..cfg.iscurrstr..pwm1rate.."<br> <input type=\"range\" name=\"pwm1\" value=\""..pwm1rate
@@ -305,6 +293,21 @@ if(cfg.pwd~=nil)then
 e=e.."<br>"..cfg.pwdstr.." <input type=\"password\" name=\"pwd\"/><br><br>"
 end
 e=e.."<input type=\"submit\" value=\""..cfg.setvalstr.."\" size=\"7\"> </font></form><style scoped>.fw {width: 90%}</style></body></html>"
+elseif(a=="/s")then
+e=e.."<body>"..cfg.statusstr.."<br><br>"..cfg.vstr.." "..(adc.read(0)*4).." mV<br><br>"
+if(wifi.sta.status()==wifi.STA_GOTIP)then
+e=e.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
+end
+e=e..cfg.pwdstr.."<body><form action=\"\" method=\"post\"><input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\"></body></html>"
+elseif(a=="/css.css")then
+if(file.open("css.css")~=nil)then
+e=file.read()
+file.close()
+end
+else
+e=e.."<head><title>"..cfg.servername.."</title><meta name=\"viewport\" content=\"width=300, initial-scale=1, maximum-scale=5\"></head><body><font size=\""..cfg.titlesize.."\">"
+e=e..cfg.servername.."</font><br><br><a href=\"c\" target=\"m\">"..cfg.configstr.."</a> <a href=\"s\" target=\"m\">"..cfg.statusstr
+e=e.."</a><br><iframe name=\"m\" src=\"c\" height=\""..cfg.frameh.."\" width=\""..cfg.framew.."\"></iframe></body></html>"
 end
 i:send(e)
 i:close()
