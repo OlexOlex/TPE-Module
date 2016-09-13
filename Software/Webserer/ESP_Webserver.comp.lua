@@ -15,37 +15,37 @@ e=e.."</option>"
 end
 return e
 end
-function nextSeqStep(i,o,n,a)
-local e=file.open(i)
-if(e==true)then
-a=a+1
-for e=0,a,1 do
+function nextSeqStep(i,o,n,e)
+local t=file.open(i)
+if(t==true)then
+e=e+1
+for e=0,e,1 do
 line=file.readline()
 end
 file.close()
 if(line==nil)then
 return
 end
-local e=""
 local t=""
-for a,o in string.gmatch(line,"(%w+), (%w+)")do
-e=a
-t=string.gsub(o,"\n","")
+local a=""
+for e,o in string.gmatch(line,"(%w+), (%w+)")do
+t=e
+a=string.gsub(o,"\n","")
 end
-if(e~=nil and t~=nil)then
-duty=tonumber(e)
-time=tonumber(t)
+if(t~=nil and a~=nil)then
+duty=tonumber(t)
+time=tonumber(a)
 end
 if(duty~=nil)then
 pwm.setduty(o,duty)
 tmr.alarm(n,time,0,function()
-nextSeqStep(i,o,n,a)
+nextSeqStep(i,o,n,e)
 end)
 else
-if(e=="repeat")then
+if(t=="repeat")then
 if(time~=nil)then
 else
-if(t=="infinite")then
+if(a=="infinite")then
 nextSeqStep(i,o,n,0)
 else
 pwm.setduty(o,0)
@@ -299,11 +299,6 @@ if(wifi.sta.status()==wifi.STA_GOTIP)then
 e=e.."WiFi client IP: "..wifi.sta.getip().."<br>WiFi client hostname: "..wifi.sta.gethostname().."<br><br>"
 end
 e=e..cfg.pwdstr.."<body><form action=\"\" method=\"post\"><input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\"></body></html>"
-elseif(a=="/css.css")then
-if(file.open("css.css")~=nil)then
-e=file.read()
-file.close()
-end
 else
 e=e.."<head><title>"..cfg.servername.."</title><meta name=\"viewport\" content=\"width=300, initial-scale=1, maximum-scale=5\"></head><body><font size=\""..cfg.titlesize.."\">"
 e=e..cfg.servername.."</font><br><br><a href=\"c\" target=\"m\">"..cfg.configstr.."</a> <a href=\"s\" target=\"m\">"..cfg.statusstr
@@ -312,18 +307,6 @@ end
 i:send(e)
 i:close()
 if(t.pwd==cfg.pwd)then
-if(t.pin1~=nil and cfg.pin1en=="en")then
-if(t.pin1=="1")then
-gpio.write(cfg.pin1,gpio.HIGH)
-gpio.write(cfg.pin1,gpio.LOW)
-end
-end
-if(t.pin2~=nil and cfg.pin2en=="en")then
-if(t.pin2=="1")then
-gpio.write(cfg.pin2,gpio.HIGH)
-gpio.write(cfg.pin2,gpio.LOW)
-end
-end
 if(newseq1==1 and cfg.pwm1en=="en")then
 tmr.stop(1)
 nextSeqStep(seq1,cfg.pwm1pin,1,0)
@@ -339,6 +322,19 @@ tmr.stop(3)
 nextSeqStep(seq3,cfg.pwm3pin,3,0)
 newseq3=0
 end
+if(t.pin1~=nil and cfg.pin1en=="en")then
+if(t.pin1=="1")then
+gpio.write(cfg.pin1,gpio.HIGH)
+end
+end
+if(t.pin2~=nil and cfg.pin2en=="en")then
+if(t.pin2=="1")then
+gpio.write(cfg.pin2,gpio.HIGH)
+end
+end
+tmr.delay(50000)
+gpio.write(cfg.pin1,gpio.LOW)
+gpio.write(cfg.pin2,gpio.LOW)
 end
 node.setcpufreq(node.CPU80MHZ)
 collectgarbage()

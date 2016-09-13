@@ -447,12 +447,12 @@ srv:listen(80,function(conn)
             buf = buf..cfg.pwdstr.."<body><form action=\"\" method=\"post\"><input type=\"password\" name=\"pwd\"/><br><br><input type=\"checkbox\" name=\"off\" value=\"1\"> <input type=\"submit\" value=\""..cfg.turnoffstr.."\"></body></html>"
             
         -- if css file is requested, return it
-        elseif(path =="/css.css") then
+        --elseif(path =="/css.css") then
             -- file may contain max. 1024 characters 
-            if(file.open("css.css") ~= nil) then
-                buf = file.read()
-                file.close()
-            end
+            --if(file.open("css.css") ~= nil) then
+                --buf = file.read()
+                --file.close()
+            --end
         -- else return main page
         else --if(path == nil or path == "/") then
             buf = buf.."<head><title>"..cfg.servername.."</title><meta name=\"viewport\" content=\"width=300, initial-scale=1, maximum-scale=5\"></head><body><font size=\""..cfg.titlesize.."\">"
@@ -463,24 +463,8 @@ srv:listen(80,function(conn)
         client:send(buf)
         client:close()
 
-        -- if the password is right or no password to be asked for
+        -- if the password is right or no password to be asked for, see if there is anything to be set
         if(_POST.pwd == cfg.pwd) then
-            -- take care of the binary pin functions and start PWM sequences, now that the request was answered
-            if(_POST.pin1 ~= nil and cfg.pin1en == "en") then
-                if( _POST.pin1 == "1" ) then
-                    gpio.write(cfg.pin1, gpio.HIGH)
-                    -- optionally wait for X ms
-                    gpio.write(cfg.pin1, gpio.LOW)
-                end
-            end
-
-            if(_POST.pin2 ~= nil and cfg.pin2en == "en") then
-                if( _POST.pin2 == "1" ) then
-                    gpio.write(cfg.pin2, gpio.HIGH)
-                    -- optionally wait for X ms
-                    gpio.write(cfg.pin2, gpio.LOW)
-                end
-            end
 
             -- sequences were allready read, react if they are newly set
             if(newseq1 == 1 and cfg.pwm1en == "en") then
@@ -500,9 +484,27 @@ srv:listen(80,function(conn)
                 nextSeqStep(seq3, cfg.pwm3pin, 3, 0)
                 newseq3 = 0
             end
+
+            -- take care of the binary pin functions and start PWM sequences, now that the request was answered
+            if(_POST.pin1 ~= nil and cfg.pin1en == "en") then
+                if( _POST.pin1 == "1" ) then
+                    gpio.write(cfg.pin1, gpio.HIGH)
+                end
+            end
+            if(_POST.pin2 ~= nil and cfg.pin2en == "en") then
+                if( _POST.pin2 == "1" ) then
+                    gpio.write(cfg.pin2, gpio.HIGH)
+                end
+            end
+            -- wait for X us, then turn off the binary pins (bad, better use a timer.alarm(...), but we run out of heap space :/ )
+            tmr.delay(50000)
+            gpio.write(cfg.pin1, gpio.LOW)
+            gpio.write(cfg.pin2, gpio.LOW)
         end
+                                                                                                                                     
         -- reset CPU frequency to 80MHz
         node.setcpufreq(node.CPU80MHZ)
+                                                                                                                                     
         -- Done. Send in cleaning team
         collectgarbage()
     end)
