@@ -1,12 +1,12 @@
 # TPE-Module
 **A simple, small, cheap and relatively easy to build module to control 3 PWM driven and 2 binary (on/off) outputs via WIFI and a webinterface** (designed for controlling 3 vibrators and 2 other custom modules, especially in BDSM plays, that's why there is a password protection available)
 
-Runs on any newer ESP8266 module running NodeMCU (the ones with more RAM than the first version, usually featuring 4MB flash)
-I recommend an integer version of NodeMCU, the floatingpoint accurate version might most probably use too much RAM.
+Runs on any newer ESP8266 module running NodeMCU (the ones with more RAM than the first version, usually featuring 4MB flash)<br/>
+The integer version of NodeMCU is reccomended, the floatingpoint accurate version will most probably use too much RAM.
 
 To flash NodeMCU to your module you can use programs like [esptool.py](https://github.com/themadinventor/esptool/blob/master/esptool.py)
 
-To access the NodeMCU filesystem you can use programs like [ESPlorer](http://esp8266.ru/esplorer/)
+To access the NodeMCU filesystem you can use programs like [ESPlorer](http://esp8266.ru/esplorer/)<br/>
 You need it to upload the Lua server program, the two configuration files (ESPWIFI.conf and ESPWebserver.conf) and any sequence files. You also need it to test (execute) the Lua server program before renaming it so it gets executed automatically at startup (broken init.lua files might brick your module and force you to re-flash NodeMCU to un-brick it).
 
 In case you change anything in the Lua server program, remember to compress the Lua program for uploading it using [Luasrcdiet](http://esp8266.ru/esplorer/) (otherwise it will most likely bust the modules RAM when executing).
@@ -17,7 +17,9 @@ The Module with an attached vibrating bullet can look like this:
 
 ![Module photos](https://github.com/OlexOlex/TPE-Module/blob/master/Hardware%2BChassis/Pictures/IMG_20160630_033513.jpg)
 
-The website can look like this in english, there is an english and a german sample config file available (enable or disable any output, name anything as you wish. The "Unlock" and "Beep" are just an example, you need to attach a custom module to an output port in order to get any functionality from the two binary outputs)
+The website can look like this in english, there is an english and a german sample config file available<br/>
+Enable or disable any outputs options to be displayed and name (mostly) anything as you wish.<br>
+The "Unlock" and "Beep" are just an example, you need to attach a custom module to an output port in order to get any functionality from the two binary outputs. They turn "on" for 20ms  when activated.
 
 ![Main website screenshot](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/English_website_v1.0.png) ![Status and turn-off website screenshot](https://github.com/OlexOlex/TPE-Module/blob/master/Software/Pictures/English_website_status_wifi_v1.1.png)
 
@@ -77,27 +79,27 @@ Detailed information and sample links to the product pages of some online shops 
 * Additionally you might want dust covers for the micro-USB port and the sockets, a "prototyping" pcb (no breadboard) and shrinking tube might be useful as well
 * For building a small bullet vibrator a common mobile phone vibration motor and some tube, shrinking tube and a rubber foot/etc for a case + a 2 wire cable
 
-### Tools needed:
-* A soldering iron and some solder
-* A side cutter or strong scissors for cutting wires, a wire stripper might be handy, but if you are carefully or handy, you don't need one
+### Tools needed for the module as shown above:
+* A soldering iron and some solder wire
+* A side cutter or strong scissors for cutting wires, a wire stripper might be handy, too.
 * An electric drilling machine (a vertical drilling machine is even more useful)
 * A 5mm steel drill for drilling the holes for the 3,5mm sockets to stick through the case, optionally an 8mm steel drill to widen the front of the holes to screw the nuts to the sockets
-* A steel drill with the same diameter as the buttons' shaft (or a smaller one and a milling cutter/file for enlargening the hole)
-* A 4mm drill and/or milling cutter for drilling the hole for the micro-USB socket (multiple holes next to each other becoming a slot)
+* A steel or wood drill with the same diameter as the buttons' shaft (or a smaller one and a milling cutter/file for enlargening the hole)
+* A 4mm drill and/or milling cutter for drilling the holes for the micro-USB socket (multiple holes next to each other becoming a slot)
 * A trianglular or semi-circle file for cleaning the hole for the micro-USB socket
-* Waterproof glue and hot glue or similar to glue the components safely together and to the case (two component resin or silicon might work as well)
+* Waterproof glue and hot glue or similar, to glue the components safely together and to the case (two component resin or silicon might work as well)
 * Something to measure and mark where to drill the holes in the case
 
 ## How to build one:
-* Build the hardware by wiring everything together (don't use the chassis yet)
-* Get an image of the NodeMCU firmware, e.g. the copy provided in this project or get a new one, e.g. at http://nodemcu-build.com/ (!!!*dev branch*!!! many functionalities are not available in the old "stable" branch)
-* Flash this image on your ESP-module by turning it on while having a wire between GND ("Minus") and GPIO0 -keep the power button pressed or shortened so it does not turn off again! You can remove the wire from GPIO0 a few moments after tunring the module on. You also might want to have the battery disconnected for this step for security reasons.
+* Build the hardware by wiring everything together (use the chassis only for checking the components' later placement)
+* Get an image of the NodeMCU firmware, e.g. the copy provided in this project, or get a new one, e.g. at http://nodemcu-build.com/ (!!!*dev branch*!!! many functionalities are not available in the old "stable" branch)
+* Flash this image on your ESP-module by turning it on while having a wire between GND ("Minus") and GPIO0 - keep the power button pressed or shortened so it does not turn off again! You can remove the wire from GPIO0 a few moments after tunring the module on. You also might want to have the battery disconnected for this step for security reasons.
 * Reboot the module by releasing the power button/shorting, removing the wire to GPIO0 (if you did not allready), and pressing/shorting the power button again (keep presssed/shortened).
 * Upload the server Lua script (compressed by Luasrcdiet), the config files and any sequence file you want using e.g. ESPlorer. You might need to request the currently free heap space a few times before the connection is properly synchronized ("Heap"-button in ESPlorer). If you get weird characters but nothing works, close the serial port, change the baud rate (9600 or 115200 most likely) and open it again, then try again reading the free heap space.
 * To test it, execute the server script by reloading the file list in ESPlorer ("Reload" button) and click on the file to run it
 * If there are no error messages in ESPlorer, your module does not turn off after releasing the button/removing the shorting and there is a WIFI named "remoteWIFI", it works. Try connecting to the WIFI using the password of the WIFI configuration file ("pwd") and test the output sockets (default website passwords: in the english condfg file: mypassword, in the german config file: meinPasswort)
 * Change the name of the server Lua script to "init.lua", change your configuration files as you wish and upload them, turn off the module and restart it
-* If everything works, assemble the hardware in the chassis to find out and mark where you want to drill the holes (you need a hole for every 3.5mm socket, one for the button, and a slot for the micro-USB socket). Then drill the holes, next assemble and fix everything to the chassis. Don't forget to test if everything works. Additionally you can seal everything with glue and hot glue or whatever you think is useful, so no water can get in the module, or at least hardly any. Be careful though, you do not want to get any glue in the micro-USB socket.
+* If everything works, assemble the hardware in the chassis to find out and mark where you want to drill the holes (you need a hole for every 3.5mm socket, one for the button, and a slot for the micro-USB socket). Then drill the holes, next assemble and fix everything to the chassis. Don't forget to test if everything works. Additionally you can seal everything with glue and hot glue or whatever you think is useful, so no water can get in the module, or at least hardly any. Be careful though, you do not want to get any glue inside the micro-USB socket!
 * Have fun
 
 Questions? Ask me via olexolex at gmx dot de.
