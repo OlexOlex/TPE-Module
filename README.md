@@ -107,6 +107,7 @@ Questions? Ask me via olexolex at gmx dot de.
 ## Tested on the following platforms:
 Worked on
 * Android 4.4 - Android Browser, Firefox
+* Android 7.0 - Firefox
 * Kubuntu Linux - Firefox, Chromium
 * Linux command line - curl
 
